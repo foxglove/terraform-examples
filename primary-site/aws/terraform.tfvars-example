@@ -1,7 +1,7 @@
 inbox_bucket_name = "org-slug-inbox-bucket"
 lake_bucket_name  = "org-slug-lake-bucket"
 vpc_name          = "org-slug-vpc"
-cluster_name      = "org-slug-cluster"
+eks_cluster_name  = "org-slug-cluster"
 
 inbox_notification_endpoint = "https://29b2-82-28-66-178.eu.ngrok.io"
 primarysite_iam_user_name = "org-slug-primarysite-user"

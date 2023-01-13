@@ -17,3 +17,13 @@ variable "primarysite_iam_user_name" {
   type        = string
   description = "Name of the primary site's IAM user with programmatic access"
 }
+
+variable "vpc_name" {
+  type        = string
+  description = "Name of the VPC"
+}
+
+variable "eks_cluster_name" {
+  type        = string
+  description = "Name of the EKS cluster"
+}
