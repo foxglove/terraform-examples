@@ -31,3 +31,18 @@ The provider in this package will pick up the default credentials automagically.
 5. Run `terraform init --backend-config backend.tfvars`
 
 You should now be able to run `terraform plan` and `terraform apply`.
+
+
+### AWS Load Balancer Controller
+
+The [AWS Load Balancer Controller](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
+manages AWS Elastic Load Balancers for a Kubernetes cluster. The controller provisions an
+AWS Application Load Balancer (ALB) when a Kubernetes Ingress is created. 
+
+### A note on Fargate
+
+There is a managed node in the EKS example, and only foxglove resources (in the `foxglove`
+namespace) will run on Fargate (see the Fargate profile in the example). If the managed node
+is removed from the example, the default CoreDns will need to be updated; see [this guide](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/deploy-coredns-on-amazon-eks-with-fargate-automatically-using-terraform-and-python.html).
+
+Similarly, logging from the Fargate payloads requires setting up FluentBit as per [this guide](https://docs.aws.amazon.com/eks/latest/userguide/fargate-logging.html).
