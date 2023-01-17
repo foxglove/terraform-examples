@@ -37,7 +37,6 @@ resource "aws_iam_policy" "policy" {
   policy = data.aws_iam_policy_document.policy_document.json
 }
 
-# Admin user for Terraform to access this sub-org
 resource "aws_iam_user" "iam_user" {
   name          = var.iam_user_name
   path          = "/"
