@@ -82,7 +82,7 @@ or set `manage_aws_auth_configmap = true` in the eks module (will require settin
 
 ### AWS Load Balancer Controller
 
-TO provisions an AWS Application Load Balancer (ALB) when a Kubernetes Ingress is created,
+To provisions an AWS Application Load Balancer (ALB) when a Kubernetes Ingress is created,
 the AWS Load Balancer Controller needs to be installed in the cluster. Follow the
 [AWS user guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
 to set up this add-on.
