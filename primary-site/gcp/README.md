@@ -16,3 +16,10 @@ https://cloud.google.com/docs/terraform/resource-management/store-state
 ## Required environment variables
 
 `GOOGLE_CREDENTIALS`: JSON key for the owner service account
+
+## Modules
+
+- `storage` 
+
+- `pubsub`
+

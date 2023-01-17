@@ -32,3 +32,18 @@ variable "bucket_delete_num_newer_version" {
   type        = number
   description = "Lifecycle rule to delete objects with over X older versions"
 }
+
+variable "primarysite_iam_user_name" {
+  type        = string
+  description = "Name of the primary site's IAM user with programmatic access"
+}
+
+variable "vpc_name" {
+  type        = string
+  description = "Name of the VPC network"
+}
+
+variable "cluster_name" {
+  type        = string
+  description = "Name of the Autopilot cluster"
+}
