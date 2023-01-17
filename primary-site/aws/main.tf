@@ -109,6 +109,9 @@ module "eks" {
   }
 
   fargate_profiles = {
+    # This Fargate profile assumes that the Foxglove resources will be deployed in
+    # the `foxglove` namespace. All workloads in this namespace will be run by the
+    # Fargate scheduler.
     foxglove = {
       create_iam_role = true
       name            = "foxglove"
