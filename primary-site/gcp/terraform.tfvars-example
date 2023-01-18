@@ -1,0 +1,12 @@
+gcp_project  = "my-project-id"
+gcp_region   = "us-west2"
+vpc_name     = "org-slug-vpc"
+cluster_name = "org-slug-cluster"
+
+inbox_bucket_name                        = "org-slug-inbox-bucket"
+lake_bucket_name                         = "org-slug-lake-bucket"
+bucket_delete_days_since_noncurrent_time = 14
+bucket_delete_num_newer_version          = 3
+
+inbox_notification_endpoint = "https://api.foxglove.party/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
+primarysite_iam_user_name   = "org-slug-primarysite-user"
