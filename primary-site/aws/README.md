@@ -19,9 +19,10 @@ Terraform needs an administrator user's account ID and account secret for its AW
 create IAM credentials manually, navigate to [IAM](https://us-east-1.console.aws.amazon.com/iamv2/home)
 
 Add a new user:
-* Select `Access key - Programmatic access`
-* Attach the `AdministratorAccess` policy directly
-* Record the credentials or download them in a CSV
+
+- Select `Access key - Programmatic access`
+- Attach the `AdministratorAccess` policy directly
+- Record the credentials or download them in a CSV
 
 It's also best practice on aws to store the Terraform state on S3. This will be used to store
 the `tfstate` in the cloud, rather than keeping them locally. Create an S3 bucket, and make
@@ -43,29 +44,29 @@ tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
 2. Use the `inbox_notification_endpoint` variable from the Foxglove Console's site settings.
-2. Change the other variables as needed
-3. Copy `backend.tfvars-example` to `backend.tfvars`
-4. Set the bucket name and region to what was created in the "Getting started" step; key can
+3. Change the other variables as needed
+4. Copy `backend.tfvars-example` to `backend.tfvars`
+5. Set the bucket name and region to what was created in the "Getting started" step; key can
    be any object key.
-5. Run `terraform init --backend-config backend.tfvars`
+6. Run `terraform init --backend-config backend.tfvars`
 
 You should now be able to run `terraform plan` and `terraform apply`.
 
 ## Modules
 
 - `iam`: creates an IAM user with programmatic access. The credentials will be in `tfstate` as
-         as sensitive output values. Use these for the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-         environment variables in the `cloud-credentials` secret, as described in the
-         [Configure Cloud Credentials](https://foxglove.dev/docs/data-platform/primary-sites/configure-cloud-credentials)
-         section.
-         This user has access to read/write both the `inbox` and `lake` S3 buckets.
+  as sensitive output values. Use these for the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+  environment variables in the `cloud-credentials` secret, as described in the
+  [Configure Cloud Credentials](https://foxglove.dev/docs/data-platform/primary-sites/configure-cloud-credentials)
+  section.
+  This user has access to read/write both the `inbox` and `lake` S3 buckets.
 
 - `s3`: creates an S3 bucket with private access. This module is used to create the `inbox` and
-        `lake` buckets.
+  `lake` buckets.
 
 - `sns`: creates an SNS topic with a https subscription, and attaches it to an S3 bucket's
-         `s3:ObjectCreated:*` events. Whenever a new object appears in the bucket, the webhook
-         `inbox_notification_endpoint` will be notified.
+  `s3:ObjectCreated:*` events. Whenever a new object appears in the bucket, the webhook
+  `inbox_notification_endpoint` will be notified.
 
 ## Production use
 

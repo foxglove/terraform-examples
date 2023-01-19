@@ -1,0 +1,8 @@
+resource_group_name = "<resource_group_name>"
+resource_location   = "Central US"
+
+storage_account_name             = "fgprimarysite$RANDOM"
+deleted_blob_retention_days      = 7
+deleted_container_retention_days = 7
+
+inbox_notification_endpoint = "https://api.foxglove.party/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"

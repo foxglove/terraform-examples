@@ -18,9 +18,10 @@ inbox and lake buckets.
 Terraform needs a GCS project and a service account with project owner permissions.
 
 To add a new service account with a private key:
-* Select `IAM & Admin` and then `Service Accounts`
-* In `Grant this service account access to the project` select `Owner` basic role
-* Open the `keys` tab, add a new key and download it as a JSON
+
+- Select `IAM & Admin` and then `Service Accounts`
+- In `Grant this service account access to the project` select `Owner` basic role
+- Open the `keys` tab, add a new key and download it as a JSON
 
 It's also best practice to store the Terraform state in GCS's cloud storage. This will be
 used to store the `tfstate` in the cloud, rather than keeping them locally. Create a bucket,
@@ -49,29 +50,29 @@ tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
 2. Use the `inbox_notification_endpoint` variable from the Foxglove Console's site settings.
-2. Change the other variables as needed
-3. Copy `backend.tfvars-example` to `backend.tfvars`
-4. Set the bucket name and region to what was created in the "Getting started" step; key can
+3. Change the other variables as needed
+4. Copy `backend.tfvars-example` to `backend.tfvars`
+5. Set the bucket name and region to what was created in the "Getting started" step; key can
    be any object key.
-5. Run `terraform init --backend-config backend.tfvars`
+6. Run `terraform init --backend-config backend.tfvars`
 
 You should now be able to run `terraform plan` and `terraform apply`.
 
 ## Modules
 
 - `iam`: creates an IAM user with a JSON private key. The json will be stored base64-encoded in
-         the `tfstate` as sensitive output value. Copy the decoded content in a `credentials.json`
-         file, then create a `cloud-credentials` secret for the Kubernetes cluster, as described
-         in the [Configure Cloud Credentials](https://foxglove.dev/docs/data-platform/primary-sites/configure-cloud-credentials)
-         section.
-         This user has access to read/write both the `inbox` and `lake` buckets.
+  the `tfstate` as sensitive output value. Copy the decoded content in a `credentials.json`
+  file, then create a `cloud-credentials` secret for the Kubernetes cluster, as described
+  in the [Configure Cloud Credentials](https://foxglove.dev/docs/data-platform/primary-sites/configure-cloud-credentials)
+  section.
+  This user has access to read/write both the `inbox` and `lake` buckets.
 
 - `storage`: creates a bucket with private access. This module is used to create the `inbox` and
-             `lake` buckets.
+  `lake` buckets.
 
 - `pubsub`: creates a Pub/Sub topic and dead letter queue with a https subscription, and attaches
-            it to a bucket's `OBJECT_FINALIZE` object notifications. Whenever a new object appears
-            in the bucket, the webhook `inbox_notification_endpoint` will be notified.
+  it to a bucket's `OBJECT_FINALIZE` object notifications. Whenever a new object appears
+  in the bucket, the webhook `inbox_notification_endpoint` will be notified.
 
 ## Connecting to the cluster
 

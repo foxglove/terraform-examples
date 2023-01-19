@@ -1,3 +1,3 @@
 bucket = "terraform-state-fg-CHANGEME"
 region = "us-east-1"
-key    = "dataplatform/CHANGEME/terraform.tfstate"
+key    = "primarysite/CHANGEME/terraform.tfstate"
