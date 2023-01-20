@@ -13,14 +13,9 @@ variable "storage_account_name" {
   description = "Name of the storage account to hold the `inbox` and `lake` containers"
 }
 
-variable "deleted_blob_retention_days" {
-  type        = number
-  description = "Retention policy to keep blobs for X days"
-}
-
-variable "deleted_container_retention_days" {
-  type        = number
-  description = "Retention policy to keep containers for X days"
+variable "storage_account_resource_id" {
+  type        = string
+  description = "ID of the storage account"
 }
 
 variable "inbox_notification_endpoint" {
@@ -36,24 +31,4 @@ variable "inbox_webhook_max_delivery_attempts" {
 variable "inbox_webook_event_minutes_to_live" {
   type        = number
   description = "Max TTL for the inbox webhook event"
-}
-
-variable "cluster_name" {
-  type        = string
-  description = "Name of the cluster (will be used as DNS prefix as well)"
-}
-
-variable "cluster_min_nodes" {
-  type        = string
-  description = "Minimum number of nodes in the cluster"
-}
-
-variable "cluster_max_nodes" {
-  type        = string
-  description = "Maximum number of nodes in the cluster"
-}
-
-variable "cluster_vm_size" {
-  type        = string
-  description = "Cluster VM size"
 }

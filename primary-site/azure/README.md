@@ -45,5 +45,12 @@ You should now be able to run `terraform plan` and `terraform apply`.
 
 ## Modules
 
+- `eventgrid`: creates an EventGrid topic with a https subscription, and attaches it to the inbox
+  container. Whenever a new object appears in the storage container, the webhook
+  `inbox_notification_endpoint` will be notified.
+
 - `storage`: creates the storage account with the `lake` and `inbox` containers and private
   access.
+
+- `k8s`: creates a kubernetes cluster, and outputs the connection details in the `tfstate`, under
+  the `kube_config_raw` key.
