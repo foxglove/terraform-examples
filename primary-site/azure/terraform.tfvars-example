@@ -1,0 +1,16 @@
+resource_group_name      = "<resource_group_name>"
+resource_location        = "Central US"
+application_display_name = "org-slug-application"
+
+storage_account_name             = "fgprimarysite$RANDOM"
+deleted_blob_retention_days      = 7
+deleted_container_retention_days = 7
+
+inbox_notification_endpoint         = "https://api.foxglove.party/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
+inbox_webhook_max_delivery_attempts = 30
+inbox_webook_event_minutes_to_live  = 1440
+
+cluster_name      = "org-slug-cluster"
+cluster_min_nodes = 1
+cluster_max_nodes = 4
+cluster_vm_size   = "Standard_D4_v2"

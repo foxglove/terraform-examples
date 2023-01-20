@@ -1,4 +1,4 @@
-## ----- S3 buckets -----
+## ----- Storage -----
 
 module "bucket_inbox" {
   source      = "./modules/storage"

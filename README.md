@@ -6,5 +6,6 @@ Use the templates under `/primary-site` to create resources for a Foxglove Prima
 
 For more details, see the README for each platform:
 
-* [Amazon AWS](./tree/main/primary-site/aws/README.md)
-* [Google Cloud Platform](./tree/main/primary-site/gcp/README.md)
+* [Amazon AWS](./blob/main/primary-site/aws/README.md)
+* [Google Cloud Platform](./blob/main/primary-site/gcp/README.md)
+* [Microsoft Azure](./blob/main/primary-site/azure/README.md)
