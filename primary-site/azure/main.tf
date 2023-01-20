@@ -25,6 +25,18 @@ module "inbox_notification" {
   inbox_webook_event_minutes_to_live  = var.inbox_webook_event_minutes_to_live
 }
 
+## ----- IAM -----
+
+module "primary_site_iam" {
+  source = "./modules/iam"
+
+  resource_group_name          = var.resource_group_name
+  storage_account_name         = module.storage.storage_account_name
+  application_display_name     = var.application_display_name
+  inbox_storage_container_name = module.storage.inbox_storage_container_name
+  lake_storage_container_name  = module.storage.lake_storage_container_name
+}
+
 ## ----- Kubernetes cluster -----
 
 module "kubernetes_cluster" {

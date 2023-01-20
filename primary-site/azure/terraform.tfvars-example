@@ -1,5 +1,6 @@
-resource_group_name = "<resource_group_name>"
-resource_location   = "Central US"
+resource_group_name      = "<resource_group_name>"
+resource_location        = "Central US"
+application_display_name = "org-slug-application"
 
 storage_account_name             = "fgprimarysite$RANDOM"
 deleted_blob_retention_days      = 7
@@ -12,4 +13,4 @@ inbox_webook_event_minutes_to_live  = 1440
 cluster_name      = "org-slug-cluster"
 cluster_min_nodes = 1
 cluster_max_nodes = 4
-cluster_vm_size   = "Standard_D2_v2"
+cluster_vm_size   = "Standard_D4_v2"

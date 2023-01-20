@@ -45,6 +45,13 @@ You should now be able to run `terraform plan` and `terraform apply`.
 
 ## Modules
 
+- `iam`: creates an Active Directory application and a service principal with credentials that 
+  can be used for the `AZURE_TENANT_ID`, `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET` environment
+  variables in the Kubernets secret, as described on the Foxglove docs website, under the
+  [Configure Cloud Credentials](https://foxglove.dev/docs/data-platform/primary-sites/configure-cloud-credentials)
+  section.
+  This service principal has access to read/write both the `inbox` and `lake` containers.
+
 - `eventgrid`: creates an EventGrid topic with a https subscription, and attaches it to the inbox
   container. Whenever a new object appears in the storage container, the webhook
   `inbox_notification_endpoint` will be notified.

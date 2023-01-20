@@ -57,3 +57,8 @@ variable "cluster_vm_size" {
   type        = string
   description = "Cluster VM size"
 }
+
+variable "application_display_name" {
+  type        = string
+  description = "Name of the application registration within Azure Active Directory"
+}
