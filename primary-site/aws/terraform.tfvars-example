@@ -3,5 +3,6 @@ lake_bucket_name  = "org-slug-lake-bucket"
 vpc_name          = "org-slug-vpc"
 eks_cluster_name  = "org-slug-cluster"
 
-inbox_notification_endpoint = "https://api.foxglove.party/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
-primarysite_iam_user_name = "org-slug-primarysite-user"
+inbox_notification_endpoint            = "https://api.foxglove.party/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
+primarysite_iam_user_name              = "org-slug-primarysite-user"
+abort_incomplete_multipart_upload_days = 5

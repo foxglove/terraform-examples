@@ -68,7 +68,9 @@ You should now be able to run `terraform plan` and `terraform apply`.
   This user has access to read/write both the `inbox` and `lake` buckets.
 
 - `storage`: creates a bucket with private access. This module is used to create the `inbox` and
-  `lake` buckets.
+  `lake` buckets. The lifecycle rule ensures that incomplete multipart uploads are garbage
+  collected - otherwise the uploaded parts would remain in the S3 bucket, occurring charges
+  forever.
 
 - `pubsub`: creates a Pub/Sub topic and dead letter queue with a https subscription, and attaches
   it to a bucket's `OBJECT_FINALIZE` object notifications. Whenever a new object appears

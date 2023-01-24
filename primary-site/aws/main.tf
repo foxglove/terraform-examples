@@ -3,11 +3,15 @@
 module "s3_lake" {
   source      = "./modules/s3"
   bucket_name = var.lake_bucket_name
+
+  abort_incomplete_multipart_upload_days = var.abort_incomplete_multipart_upload_days
 }
 
 module "s3_inbox" {
   source      = "./modules/s3"
   bucket_name = var.inbox_bucket_name
+
+  abort_incomplete_multipart_upload_days = var.abort_incomplete_multipart_upload_days
 }
 
 ## ----- Pubsub -----
