@@ -30,7 +30,7 @@ the [azurerm backend docs](https://developer.hashicorp.com/terraform/language/se
 ### Run Terraform
 
 Configure the variables. Note that some of them you'll find on the Foxglove console's
-[Settings page](https://console.foxglove.party/organization?tab=sites), under the Sites
+[Settings page](https://console.foxglove.dev/organization?tab=sites), under the Sites
 tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
