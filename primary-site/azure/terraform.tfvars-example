@@ -6,7 +6,7 @@ storage_account_name             = "fgprimarysite$RANDOM"
 deleted_blob_retention_days      = 7
 deleted_container_retention_days = 7
 
-inbox_notification_endpoint         = "https://api.foxglove.party/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
+inbox_notification_endpoint         = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
 inbox_webhook_max_delivery_attempts = 30
 inbox_webook_event_minutes_to_live  = 1440
 
