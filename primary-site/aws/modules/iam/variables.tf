@@ -8,7 +8,12 @@ variable "inbox_bucket_arn" {
   description = "ARN of the inbox S3 bucket"
 }
 
-variable "iam_user_name" {
+variable "eks_oidc_provider_arn" {
   type        = string
-  description = "Name of the IAM user to be created"
+  description = "ARN of the EKS cluster's OIDC provider"
+}
+
+variable "eks_foxglove_namespace" {
+  type        = string
+  description = "Namespace for Foxglove resources in K8S; required for the correct SA namespace_service_accounts config"
 }
