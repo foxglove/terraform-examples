@@ -7,9 +7,8 @@ Use these templates to create resources for a Foxglove Primary Site.
 Once the resources are created, you'll be able to deploy the Helm charts into the created
 EKS cluster, and use the included S3 buckets for inbox and lake.
 
-The template's IAM user is created with programmatic access, which can be used in the
-Kubernetes cluster's `cloud-credentials` secret, allowing the services to connect to the inbox
-and lake buckets.
+The Helm chart's service accounts need to be configured to use the IAM roles created by
+this template, allowing the services to connect to the inbox and lake buckets.
 
 ## Getting started
 
@@ -54,12 +53,9 @@ You should now be able to run `terraform plan` and `terraform apply`.
 
 ## Modules
 
-- `iam`: creates an IAM user with programmatic access. The credentials will be in `tfstate` as
-  as sensitive output values. Use these for the `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-  environment variables in the `cloud-credentials` secret, as described in the
-  [Configure Cloud Credentials](https://foxglove.dev/docs/data-platform/primary-sites/configure-cloud-credentials)
-  section.
-  This user has access to read/write both the `inbox` and `lake` S3 buckets.
+- `iam`: creates the IAM roles to be used by the service accounts. Make sure to configure
+  the namespace correctly for the eks oidc provider, otherwise the workloads won't be able
+  to use the roles to connect to the `lake` and `inbox` S3 buckets.
 
 - `s3`: creates an S3 bucket with private access. This module is used to create the `inbox` and
   `lake` buckets.
@@ -71,7 +67,7 @@ You should now be able to run `terraform plan` and `terraform apply`.
 ## Production use
 
 This Terraform example creates all resources that are needed for a working Foxglove Primary
-Site deployment: the VPC, EKS cluster, IAM user, S3 buckets and the SNS topic. For production
+Site deployment: the VPC, EKS cluster, IAM roles, S3 buckets and the SNS topic. For production
 use, consider the following:
 
 ### Connecting to the cluster
