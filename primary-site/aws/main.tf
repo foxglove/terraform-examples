@@ -25,16 +25,7 @@ module "inbox_sns_notification" {
   inbox_notification_endpoint = var.inbox_notification_endpoint
 }
 
-## ----- IAM Credentials -----
-
-module "iam" {
-  source           = "./modules/iam"
-  lake_bucket_arn  = module.s3_lake.bucket_arn
-  inbox_bucket_arn = module.s3_inbox.bucket_arn
-  iam_user_name    = var.primarysite_iam_user_name
-}
-
-## ----- VPC -----
+# ----- VPC -----
 
 data "aws_availability_zones" "available" {}
 
@@ -122,4 +113,14 @@ module "eks" {
       selectors       = [{ namespace = "foxglove" }]
     }
   }
+}
+
+## ----- IAM policy & roles -----
+
+module "iam" {
+  source                 = "./modules/iam"
+  lake_bucket_arn        = module.s3_lake.bucket_arn
+  inbox_bucket_arn       = module.s3_inbox.bucket_arn
+  eks_oidc_provider_arn  = module.eks.oidc_provider_arn
+  eks_foxglove_namespace = "foxglove"
 }

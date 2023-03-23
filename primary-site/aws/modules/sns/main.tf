@@ -63,6 +63,9 @@ resource "aws_sns_topic_subscription" "webhook" {
 }
 
 resource "aws_s3_bucket_notification" "s3_notification" {
+  depends_on = [
+    aws_sns_topic_policy.default
+  ]
   bucket = var.bucket_id
 
   topic {
