@@ -34,7 +34,7 @@ module "eks_stream_service_sa_role" {
   oidc_providers = {
     main = {
       provider_arn               = var.eks_oidc_provider_arn
-      namespace_service_accounts = ["${var.eks_foxglove_namespace}:stream-service-sa"]
+      namespace_service_accounts = ["${var.eks_foxglove_namespace}:stream-service"]
     }
   }
 }

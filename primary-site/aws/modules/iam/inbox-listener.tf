@@ -45,7 +45,7 @@ module "eks_inbox_listener_sa_role" {
   oidc_providers = {
     main = {
       provider_arn               = var.eks_oidc_provider_arn
-      namespace_service_accounts = ["${var.eks_foxglove_namespace}:inbox-listener-sa"]
+      namespace_service_accounts = ["${var.eks_foxglove_namespace}:inbox-listener"]
     }
   }
 }
