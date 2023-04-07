@@ -12,34 +12,31 @@ this template, allowing the services to connect to the inbox and lake buckets.
 
 ## Getting started
 
-### Create resources for the Terraform provider
+### Configure the AWS Terraform provider
 
-Terraform needs an administrator user's account ID and account secret for its AWS provider. To
-create IAM credentials manually, navigate to [IAM](https://us-east-1.console.aws.amazon.com/iamv2/home)
+Terraform [can derive credentials](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+from several sources. Choose the method that's in line with your organization's policies, and ensure
+Terraform has sufficient access to modify your infrastructure.
 
-Add a new user:
+You must configure the provider with the proper credentials before you can use it. For a quick start
+with these examples, you can create a new IAM user with programmatic access on the AWS Console, and
+then use the `aws configure` command in [aws-cli](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+to get started:
 
+- On the AWS Console navigate to [IAM](https://us-east-1.console.aws.amazon.com/iamv2/home)
 - Select `Access key - Programmatic access`
 - Attach the `AdministratorAccess` policy directly
-- Record the credentials or download them in a CSV
+- Record the credentials (or download them in a CSV) to be used in `aws-cli`
 
-It's also best practice on aws to store the Terraform state on S3. This will be used to store
-the `tfstate` in the cloud, rather than keeping them locally. Create an S3 bucket, and make
-sure to block all public access (the tfstate will contain secrets).
-
-### Use these credentials
-
-Terraform can use these crendetials from env variables, or using the cli's configuration.
-One simple option is to use [aws-cli](https://aws.amazon.com/cli/) and run `aws configure`
-Read more: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
-
-The provider in this Terraform package will pick up the default credentials.
+It's also best practice for the AWS provider to store the Terraform state on S3. This will be used
+to store the `tfstate` in the cloud, rather than keeping them locally. Create an S3 bucket, and make
+sure to **block all public access** (the tfstate will contain secrets).
 
 ### Run Terraform
 
-Configure the variables. Note that some of them you'll find on the Foxglove console's
-[Settings page](https://console.foxglove.dev/organization?tab=sites), under the Sites
-tab.
+Before running Terraform for the first time, configure your local variables. Note that some
+of them you'll find on the Foxglove console's [Settings page](https://console.foxglove.dev/settings/sites),
+under the Sites tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
 2. Use the `inbox_notification_endpoint` variable from the Foxglove Console's site settings.
