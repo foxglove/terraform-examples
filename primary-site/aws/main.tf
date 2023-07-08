@@ -31,7 +31,7 @@ data "aws_availability_zones" "available" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "3.14.2"
+  version = "5.0.0"
 
   name = var.vpc_name
 
@@ -67,10 +67,10 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "18.30.2"
+  version = "19.15.3"
 
   cluster_name                    = var.eks_cluster_name
-  cluster_version                 = "1.24"
+  cluster_version                 = "1.27"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 

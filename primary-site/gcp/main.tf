@@ -45,7 +45,7 @@ module "iam" {
 
 module "vpc" {
   source       = "terraform-google-modules/network/google"
-  version      = "5.2.0"
+  version      = "7.1.0"
   project_id   = var.gcp_project
   network_name = var.vpc_name
   subnets = [
