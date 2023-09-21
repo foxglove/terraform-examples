@@ -82,6 +82,10 @@ module "eks" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
+  # Enable the default KMS key policy, otherwise the only role that can access
+  # the key is the role that created it
+  kms_key_enable_default_policy = true
+
   # Fargate profiles use the cluster primary security group, so these are not utilized
   create_cluster_security_group = false
   create_node_security_group    = false
