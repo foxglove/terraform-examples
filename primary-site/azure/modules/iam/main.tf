@@ -8,7 +8,7 @@ resource "azuread_application" "primary_site" {
 }
 
 resource "azuread_service_principal" "iam_principal" {
-  application_id = azuread_application.primary_site.application_id
+  client_id      = azuread_application.primary_site.client_id
   owners         = [data.azuread_client_config.current.object_id]
 }
 
