@@ -35,11 +35,11 @@ sure to **block all public access** (the tfstate will contain secrets).
 ### Run Terraform
 
 Before running Terraform for the first time, configure your local variables. Note that some
-of them you'll find on the Foxglove console's [Settings page](https://console.foxglove.dev/settings/sites),
+of them you'll find on the Foxglove [Settings page](https://app.foxglove.dev/~/settings/sites),
 under the Sites tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
-2. Use the `inbox_notification_endpoint` variable from the Foxglove Console's site settings.
+2. Use the `inbox_notification_endpoint` variable from the Foxglove site settings.
 3. Change the other variables as needed
 4. Copy `backend.tfvars-example` to `backend.tfvars`
 5. Set the bucket name and region to what was created in the "Getting started" step; key can
