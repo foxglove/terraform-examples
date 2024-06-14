@@ -13,7 +13,7 @@ resource "azurerm_eventgrid_system_topic" "inbox_event_topic" {
 # Queueing is managed by the FG control plane, but uses a deadletter storage container
 # in the case of API unreachability.
 #
-resource "azurerm_storage_container" "inbox_notifications_dql" {
+resource "azurerm_storage_container" "inbox_notifications_dlq" {
   name                  = "${var.storage_account_name}-inbox-dlq"
   storage_account_name  = var.storage_account_name
   container_access_type = "private"
@@ -49,6 +49,6 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "webhook_event_subs
 
   storage_blob_dead_letter_destination {
     storage_account_id          = var.storage_account_resource_id
-    storage_blob_container_name = azurerm_storage_container.inbox_notifications_dql.name
+    storage_blob_container_name = azurerm_storage_container.inbox_notifications_dlq.name
   }
 }
