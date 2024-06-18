@@ -4,8 +4,8 @@ output "tenant_id" {
 }
 
 output "client_id" {
-  value       = azuread_application.primary_site.application_id
-  description = "Echoes the `application_id` output value"
+  value       = azuread_application.primary_site.client_id
+  description = "Echoes the `client_id` output value"
 }
 
 output "client_secret" {
