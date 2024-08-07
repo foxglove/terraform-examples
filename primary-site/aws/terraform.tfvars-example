@@ -6,3 +6,7 @@ eks_cluster_name  = "org-slug-cluster"
 inbox_notification_endpoint            = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
 primarysite_iam_user_name              = "org-slug-primarysite-user"
 abort_incomplete_multipart_upload_days = 5
+eks_node_min_count                     = 0
+eks_node_max_count                     = 3
+eks_node_count                         = 1
+eks_node_instance_type                 = "t3.small"

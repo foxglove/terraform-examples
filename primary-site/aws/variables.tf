@@ -34,6 +34,29 @@ variable "eks_cluster_version" {
   default     = "1.30"
 }
 
+variable "eks_node_count" {
+  type = number
+  default = 1
+  description = "Number of nodes in the EKS cluster"
+}
+
+variable "eks_node_min_count" {
+  type = number
+  default = 1
+  description = "Minimum number of nodes in the EKS cluster node pool"
+}
+
+variable "eks_node_max_count" {
+  type = number
+  default = 1
+  description = "Maximum number of nodes in the EKS cluster"
+}
+
+variable "eks_node_instance_type" {
+  type = string
+  default = "t3.small"
+}
+
 variable "abort_incomplete_multipart_upload_days" {
   type        = number
   description = "Number of days a multipart upload needs to be completed within"
