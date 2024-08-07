@@ -6,6 +6,7 @@ resource "aws_sns_topic" "topic" {
   name = var.topic_name
   delivery_policy = jsonencode({
     "http" : {
+      "disableSubscriptionOverrides" : false,
       "defaultHealthyRetryPolicy" : {
         "numRetries" : 100,
         "minDelayTarget" : 20, // In seconds; default is 20
@@ -81,7 +82,7 @@ data "aws_iam_policy_document" "sqs_dlq_policy" {
 
 resource "aws_sqs_queue_policy" "allow_publish_from_sns" {
   queue_url = aws_sqs_queue.dlq.id
-  policy = data.aws_iam_policy_document.sqs_dlq_policy.json
+  policy    = data.aws_iam_policy_document.sqs_dlq_policy.json
 }
 
 resource "aws_sns_topic_subscription" "webhook" {

@@ -28,6 +28,12 @@ variable "eks_cluster_name" {
   description = "Name of the EKS cluster"
 }
 
+variable "eks_cluster_version" {
+  type        = string
+  description = "Kubernetes version of the EKS cluster"
+  default     = "1.30"
+}
+
 variable "abort_incomplete_multipart_upload_days" {
   type        = number
   description = "Number of days a multipart upload needs to be completed within"
