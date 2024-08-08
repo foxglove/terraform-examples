@@ -1,3 +1,4 @@
+# the garbage-collector serviceaccount uses the same IAM policy as the inbox-listener serviceaccount
 module "eks_garbage_collector_sa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 

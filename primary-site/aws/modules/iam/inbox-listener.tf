@@ -1,3 +1,4 @@
+# inbox listener should be able to get, delete, list and put objects into the lake and inbox S3 buckets
 data "aws_iam_policy_document" "inbox_listener_policy_document" {
   statement {
     actions = [

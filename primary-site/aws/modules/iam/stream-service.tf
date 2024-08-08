@@ -1,3 +1,4 @@
+# stream service should be able to list and get objects from the lake S3 bucket
 data "aws_iam_policy_document" "stream_service_policy_document" {
   statement {
     actions = [
