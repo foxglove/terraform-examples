@@ -4,3 +4,4 @@ terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
 backend.tfvars
+values.yaml
