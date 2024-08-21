@@ -83,4 +83,12 @@ resource "google_container_cluster" "cluster" {
     cluster_secondary_range_name  = module.vpc.subnets_secondary_ranges[0][0].range_name
     services_secondary_range_name = module.vpc.subnets_secondary_ranges[0][1].range_name
   }
+  dns_config { # forces replacement
+    cluster_dns        = "CLOUD_DNS"
+    cluster_dns_domain = "cluster.local"
+    cluster_dns_scope  = "CLUSTER_SCOPE"
+  }
+  gateway_api_config {
+    channel = "CHANNEL_STANDARD"
+  }
 }

@@ -30,6 +30,7 @@ module "inbox_notifications" {
       minimum_backoff       = "300s"
     }
   ]
+  topic_labels = {}
 }
 
 // Allow GCS to publish to the inbox notification pubsub

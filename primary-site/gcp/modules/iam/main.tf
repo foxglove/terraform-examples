@@ -11,6 +11,16 @@ resource "google_storage_bucket_iam_binding" "role_inbox_admin" {
   ]
 }
 
+resource "google_service_account_iam_binding" "user_policy" {
+  role   = "roles/iam.workloadIdentityUser"
+  service_account_id = "projects/${var.gcp_project}/serviceAccounts/${google_service_account.iam_user.email}"
+  members = [
+    "serviceAccount:${var.gcp_project}.svc.id.goog[foxglove/garbage-collector]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[foxglove/inbox-listener]",
+    "serviceAccount:${var.gcp_project}.svc.id.goog[foxglove/stream-service]"
+    ]
+}
+
 resource "google_storage_bucket_iam_binding" "role_lake_admin" {
   bucket = var.lake_bucket_name
   role   = "roles/storage.objectAdmin"
