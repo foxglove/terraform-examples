@@ -12,9 +12,12 @@ data "aws_iam_policy_document" "stream_service_policy_document" {
       "s3:GetObject",
       "s3:GetObjectVersion"
     ]
+    # Read access to the inbox is provided to serve quarantined files
     resources = [
       var.lake_bucket_arn,
-      "${var.lake_bucket_arn}/*"
+      "${var.lake_bucket_arn}/*",
+      var.inbox_bucket_arn,
+      "${var.inbox_bucket_arn}/*",
     ]
     effect = "Allow"
   }
