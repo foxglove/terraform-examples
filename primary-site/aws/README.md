@@ -25,12 +25,14 @@ to get started:
 
 - On the AWS Console navigate to [IAM](https://us-east-1.console.aws.amazon.com/iamv2/home)
 - Select `Access key - Programmatic access`
-- Attach the `AdministratorAccess` policy directly
+- Attach an appropriate policy as determined by your organization
 - Record the credentials (or download them in a CSV) to be used in `aws-cli`
 
 It's also best practice for the AWS provider to store the Terraform state on S3. This will be used
 to store the `tfstate` in the cloud, rather than keeping them locally. Create an S3 bucket, and make
 sure to **block all public access** (the tfstate will contain secrets).
+
+The application does not require the use of AWS account root privileges for deployment or operation. Do not use the AWS account root user for deployment or operations.
 
 ### Run Terraform
 
