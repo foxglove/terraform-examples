@@ -32,7 +32,7 @@ data "aws_iam_policy_document" "inbox_listener_policy_document" {
 }
 
 resource "aws_iam_policy" "inbox_listener_policy" {
-  name = "${var.eks_foxglove_namespace}-inbox-listener-sa-policy"
+  name   = "${var.eks_foxglove_namespace}-inbox-listener-sa-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.inbox_listener_policy_document.json
 }

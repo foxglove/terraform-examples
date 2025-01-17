@@ -1,4 +1,7 @@
 ## ----- Storage -----
+locals {
+  quarantine_cutoff_days = 366
+}
 
 resource "azurerm_storage_account" "storage" {
   name                     = var.storage_account_name
@@ -35,6 +38,25 @@ resource "azurerm_storage_management_policy" "storage_policy" {
       }
       version {
         delete_after_days_since_creation = 1
+      }
+    }
+  }
+  rule {
+    name    = "deleteOldQuarantinedFiles"
+    enabled = true
+    filters {
+      prefix_match = ["inbox/_quarantine/"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = local.quarantine_cutoff_days
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = local.quarantine_cutoff_days
+      }
+      version {
+        delete_after_days_since_creation = local.quarantine_cutoff_days
       }
     }
   }

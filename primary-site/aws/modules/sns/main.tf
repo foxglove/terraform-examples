@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "sqs_dlq_policy" {
 
 resource "aws_sqs_queue_policy" "allow_publish_from_sns" {
   queue_url = aws_sqs_queue.dlq.id
-  policy = data.aws_iam_policy_document.sqs_dlq_policy.json
+  policy    = data.aws_iam_policy_document.sqs_dlq_policy.json
 }
 
 resource "aws_sns_topic_subscription" "webhook" {
