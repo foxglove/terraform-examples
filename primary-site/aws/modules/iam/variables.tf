@@ -1,3 +1,8 @@
+variable "prefix" {
+  description = "Prefix for naming resources"
+  type        = string
+}
+
 variable "lake_bucket_arn" {
   type        = string
   description = "ARN of the lake S3 bucket"
