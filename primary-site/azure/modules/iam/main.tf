@@ -17,13 +17,13 @@ resource "azuread_service_principal_password" "iam_principal" {
 }
 
 resource "azurerm_role_assignment" "iam_principal_lake_contributor" {
-  principal_id         = azuread_service_principal.iam_principal.id
+  principal_id         = azuread_service_principal.iam_principal.object_id
   role_definition_name = "Storage Blob Data Contributor"
   scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${var.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${var.storage_account_name}/blobServices/default/containers/${var.inbox_storage_container_name}"
 }
 
 resource "azurerm_role_assignment" "iam_principal_inbox_contributor" {
-  principal_id         = azuread_service_principal.iam_principal.id
+  principal_id         = azuread_service_principal.iam_principal.object_id
   role_definition_name = "Storage Blob Data Contributor"
   scope                = "/subscriptions/${data.azurerm_subscription.current.subscription_id}/resourceGroups/${var.resource_group_name}/providers/Microsoft.Storage/storageAccounts/${var.storage_account_name}/blobServices/default/containers/${var.lake_storage_container_name}"
 }
