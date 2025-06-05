@@ -5,7 +5,7 @@ data "aws_iam_policy_document" "stream_service_policy_document" {
       "s3:ListBucket"
     ]
     resources = [var.lake_bucket_arn]
-    effect = "Allow"
+    effect    = "Allow"
   }
   statement {
     actions = [
@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "stream_service_policy_document" {
 }
 
 resource "aws_iam_policy" "stream_service_policy" {
-  name = "${var.eks_foxglove_namespace}-stream-service-sa-policy"
+  name   = "${var.eks_foxglove_namespace}-stream-service-sa-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.stream_service_policy_document.json
 }

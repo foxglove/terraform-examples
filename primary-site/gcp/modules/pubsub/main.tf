@@ -14,13 +14,13 @@ module "inbox_notifications" {
   topic      = "${var.bucket_name}-notifications"
   push_subscriptions = [
     {
-      name                  = "${var.bucket_name}-push-sub"
-      push_endpoint         = var.inbox_notification_endpoint
+      name          = "${var.bucket_name}-push-sub"
+      push_endpoint = var.inbox_notification_endpoint
 
       # To avoid the error where the push_subscriptions "for_each" map includes keys derived
       # from resource attributes that cannot be determined until apply, we "hard-code" the dead
       # letter topic name here. This is why `depends_on` is needed above.
-      dead_letter_topic     = "projects/${var.gcp_project}/topics/${var.bucket_name}-notifications-dlq"
+      dead_letter_topic = "projects/${var.gcp_project}/topics/${var.bucket_name}-notifications-dlq"
 
       x-goog-version        = "v1"
       ack_deadline_seconds  = 600
