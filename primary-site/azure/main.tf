@@ -35,6 +35,11 @@ module "primary_site_iam" {
   application_display_name     = var.application_display_name
   inbox_storage_container_name = module.storage.inbox_storage_container_name
   lake_storage_container_name  = module.storage.lake_storage_container_name
+
+  use_existing_service_principal        = var.use_existing_service_principal
+  existing_service_principal_client_id  = var.existing_service_principal_client_id
+  existing_service_principal_object_id  = var.existing_service_principal_object_id
+  existing_service_principal_client_secret = var.existing_service_principal_client_secret
 }
 
 ## ----- Kubernetes cluster -----
