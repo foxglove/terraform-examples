@@ -62,3 +62,28 @@ variable "application_display_name" {
   type        = string
   description = "Name of the application registration within Azure Active Directory"
 }
+
+variable "use_existing_service_principal" {
+  type        = bool
+  description = "Whether to use an existing service principal instead of creating one"
+  default     = false
+}
+
+variable "existing_service_principal_client_id" {
+  type        = string
+  description = "Client ID of existing service principal to use (required when use_existing_service_principal is true)"
+  default     = ""
+}
+
+variable "existing_service_principal_object_id" {
+  type        = string
+  description = "Object ID of existing service principal to use (required when use_existing_service_principal is true)"
+  default     = ""
+}
+
+variable "existing_service_principal_client_secret" {
+  type        = string
+  description = "Client secret of existing service principal to use (required when use_existing_service_principal is true)"
+  default     = ""
+  sensitive   = true
+}

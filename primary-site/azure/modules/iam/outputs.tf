@@ -4,12 +4,12 @@ output "tenant_id" {
 }
 
 output "client_id" {
-  value       = azuread_application.primary_site.client_id
+  value       = var.use_existing_service_principal ? var.existing_service_principal_client_id : azuread_application.primary_site[0].client_id
   description = "Echoes the `client_id` output value"
 }
 
 output "client_secret" {
-  value       = azuread_service_principal_password.iam_principal.value
+  value       = var.use_existing_service_principal ? var.existing_service_principal_client_secret : azuread_service_principal_password.iam_principal[0].value
   description = "Echoes the `password` output value"
   sensitive   = true
 }
