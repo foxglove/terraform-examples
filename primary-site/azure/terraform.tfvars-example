@@ -14,3 +14,22 @@ cluster_name      = "org-slug-cluster"
 cluster_min_nodes = 1
 cluster_max_nodes = 4
 cluster_vm_size   = "Standard_D4_v2"
+
+# Service Principal Configuration
+# Set to true to use an existing service principal instead of creating one
+use_existing_service_principal = false
+
+# The following variables are required when use_existing_service_principal is true
+# existing_service_principal_client_id = "your-client-id"
+# existing_service_principal_object_id = "your-object-id"
+# existing_service_principal_client_secret = "your-client-secret"
+
+# Storage Configuration
+# Set to true to use existing storage account and containers instead of creating them
+use_existing_storage = false
+
+# The following variables are required when use_existing_storage is true
+# existing_storage_account_name = "your-existing-storage-account"
+# existing_storage_account_resource_id = "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.Storage/storageAccounts/your-storage-account"
+# existing_inbox_storage_container_name = "inbox"
+# existing_lake_storage_container_name = "lake"
