@@ -23,3 +23,13 @@ use_existing_service_principal = false
 # existing_service_principal_client_id = "your-client-id"
 # existing_service_principal_object_id = "your-object-id"
 # existing_service_principal_client_secret = "your-client-secret"
+
+# Storage Configuration
+# Set to true to use existing storage account and containers instead of creating them
+use_existing_storage = false
+
+# The following variables are required when use_existing_storage is true
+# existing_storage_account_name = "your-existing-storage-account"
+# existing_storage_account_resource_id = "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.Storage/storageAccounts/your-storage-account"
+# existing_inbox_storage_container_name = "inbox"
+# existing_lake_storage_container_name = "lake"

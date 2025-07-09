@@ -87,3 +87,33 @@ variable "existing_service_principal_client_secret" {
   default     = ""
   sensitive   = true
 }
+
+variable "use_existing_storage" {
+  type        = bool
+  description = "Whether to use an existing storage account and containers instead of creating them"
+  default     = false
+}
+
+variable "existing_storage_account_name" {
+  type        = string
+  description = "Name of existing storage account to use (required when use_existing_storage is true)"
+  default     = ""
+}
+
+variable "existing_storage_account_resource_id" {
+  type        = string
+  description = "Resource ID of existing storage account to use (required when use_existing_storage is true)"
+  default     = ""
+}
+
+variable "existing_inbox_storage_container_name" {
+  type        = string
+  description = "Name of existing inbox storage container to use (required when use_existing_storage is true)"
+  default     = ""
+}
+
+variable "existing_lake_storage_container_name" {
+  type        = string
+  description = "Name of existing lake storage container to use (required when use_existing_storage is true)"
+  default     = ""
+}
