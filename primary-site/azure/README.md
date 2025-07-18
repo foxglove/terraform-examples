@@ -43,6 +43,26 @@ tab.
 
 You should now be able to run `terraform plan` and `terraform apply`.
 
+## Storage Configuration
+
+The template supports two modes for storage configuration:
+
+### Default Mode (Create New Storage)
+By default, the template creates a new storage account with `inbox` and `lake` containers.
+Set `use_existing_storage = false` (default) and configure:
+- `storage_account_name`: Name for the new storage account
+- `deleted_blob_retention_days`: Retention policy for blobs
+- `deleted_container_retention_days`: Retention policy for containers
+
+### Existing Storage Mode
+To use pre-existing storage account and containers, set `use_existing_storage = true` and provide:
+- `existing_storage_account_name`: Name of existing storage account
+- `existing_storage_account_resource_id`: Full resource ID of existing storage account
+- `existing_inbox_storage_container_name`: Name of existing inbox container
+- `existing_lake_storage_container_name`: Name of existing lake container
+
+When using existing storage, the storage module is skipped entirely, and the template will only configure EventGrid and IAM permissions for the existing resources.
+
 ## Modules
 
 - `iam`: creates an Active Directory application and a service principal with credentials that 
@@ -57,7 +77,7 @@ You should now be able to run `terraform plan` and `terraform apply`.
   `inbox_notification_endpoint` will be notified.
 
 - `storage`: creates the storage account with the `lake` and `inbox` containers and private
-  access.
+  access. This module is only used when `use_existing_storage = false`.
 
 - `k8s`: creates a kubernetes cluster, and outputs the connection details in the `tfstate`, under
   the `kube_config_raw` key.
