@@ -46,7 +46,7 @@ resource "google_storage_bucket" "bucket" {
   # This rule is only required for the inbox bucket to the inbox bucket, but will
   # have no impact on the lake bucket.
   lifecycle_rule {
-    action = {
+    action {
       type = "Delete"
     }
     condition {
