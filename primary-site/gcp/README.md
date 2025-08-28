@@ -20,6 +20,7 @@ Terraform needs a GCS project and a service account with project owner permissio
 To add a new service account with a private key:
 
 - Select `IAM & Admin` and then `Service Accounts`
+- Select `Create service account`
 - In `Grant this service account access to the project` select `Owner` basic role
 - Open the `keys` tab, add a new key and download it as a JSON
 
