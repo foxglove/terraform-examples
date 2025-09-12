@@ -1,3 +1,2 @@
 bucket = "terraform-state-fg-CHANGEME"
-prefix = "primarysite/CHANGEME/terraform.tfstate"
-
+prefix = "primarysite/my-environment"
