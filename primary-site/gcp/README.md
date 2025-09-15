@@ -57,16 +57,14 @@ credentials.
 First, configure the Terraform backend to store state in GCS:
 
 1. Copy `backend.tfvars-example` to `backend.tfvars`
-2. Update the following variables in `backend.tfvars`:
-   - `bucket`: The name of the GCS bucket you created in the "Create GCS bucket for Terraform state" step for storing Terraform state
-   - `prefix`: The path/prefix for your Terraform state file (e.g., `primarysite/my-environment`)
+2. Update the variables in `backend.tfvars`:
 
 3. Initialize Terraform with the backend configuration:
    ```
    terraform init --backend-config backend.tfvars
    ```
 
-   After initialization, your GCS bucket will have the following structure:
+   After initialization, your GCS bucket will have a structure similar to this:
    ```
    <bucket>
    |--primarysite (Directory)
@@ -80,17 +78,7 @@ Next, configure the main Terraform variables. Note that some of them you'll find
 [Settings page](https://app.foxglove.dev/~/settings/sites), under the Sites tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
-2. Update the following variables in `terraform.tfvars`:
-   - `gcp_project`: Your GCP project ID
-   - `gcp_region`: The GCP region where resources will be created (e.g., `us-east1`)
-   - `vpc_name`: Name for the VPC (e.g., `org-slug-vpc`)
-   - `cluster_name`: Name for the GKE cluster (e.g., `org-slug-cluster`)
-   - `inbox_bucket_name`: Name for the inbox storage bucket (e.g., `org-slug-inbox-bucket`)
-   - `lake_bucket_name`: Name for the lake storage bucket (e.g., `org-slug-lake-bucket`)
-   - `bucket_delete_days_since_noncurrent_time`: Days to retain non-current object versions (default: 14)
-   - `bucket_delete_num_newer_version`: Number of newer versions to retain (default: 3)
-   - `inbox_notification_endpoint`: Webhook endpoint from the Foxglove site settings (e.g, `https://api.foxglove.dev/endpoints/inbox-notifications?token=fox_snt_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`)
-   - `primarysite_iam_user_name`: Name for the IAM service account (e.g., `org-slug-primarysite-user`)
+2. Update the variables in `terraform.tfvars`:
 
 ### Deploy Resources
 
