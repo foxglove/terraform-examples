@@ -27,7 +27,7 @@ To add a new service account with a private key:
 
 ### Create GCS bucket for Terraform state
 
-It's best practice to store the Terraform state in GCS's cloud storage. This will be
+It's best practice to store the Terraform state in GCP's cloud storage. This will be
 used to store the `tfstate` in the cloud, rather than keeping them locally.
 
 To create a state bucket:
