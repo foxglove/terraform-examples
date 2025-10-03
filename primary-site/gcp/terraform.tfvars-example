@@ -1,12 +1,12 @@
-gcp_project  = "my-project-id"
-gcp_region   = "us-west2"
-vpc_name     = "org-slug-vpc"
-cluster_name = "org-slug-cluster"
+gcp_project  = "my-project-id"  # Your GCP project ID
+gcp_region   = "us-west2"  # The GCP region where resources will be created
+vpc_name     = "org-slug-vpc"  # Name for the VPC
+cluster_name = "org-slug-cluster"  # Name for the GKE cluster
 
-inbox_bucket_name                        = "org-slug-inbox-bucket"
-lake_bucket_name                         = "org-slug-lake-bucket"
-bucket_delete_days_since_noncurrent_time = 14
-bucket_delete_num_newer_version          = 3
+inbox_bucket_name                        = "org-slug-inbox-bucket"  # Name for the inbox storage bucket
+lake_bucket_name                         = "org-slug-lake-bucket"  # Name for the lake storage bucket
+bucket_delete_days_since_noncurrent_time = 14  # Days to retain non-current object versions
+bucket_delete_num_newer_version          = 3  # Number of newer versions to retain (default: 3)
 
-inbox_notification_endpoint = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
-primarysite_iam_user_name   = "org-slug-primarysite-user"
+inbox_notification_endpoint = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"  # Webhook endpoint from the Foxglove site settings
+primarysite_iam_user_name   = "org-slug-primarysite-user"  # Name for the IAM service account

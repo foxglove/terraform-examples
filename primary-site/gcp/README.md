@@ -13,20 +13,29 @@ inbox and lake buckets.
 
 ## Getting started
 
-### Create resources for the Terraform provider
+### Create service account for Terraform provider
 
-Terraform needs a GCS project and a service account with project owner permissions.
+Terraform needs a GCP project and a service account with project owner permissions.
 
 To add a new service account with a private key:
 
 - Select `IAM & Admin` and then `Service Accounts`
 - Select `Create service account`
+- Give it a descriptive name (e.g., `terraform-admin` or `project-terraform-sa`) - note that this is separate from the IAM username `primarysite_iam_user_name` you'll configure later in `terraform.tfvars`
 - In `Grant this service account access to the project` select `Owner` basic role
 - Open the `keys` tab, add a new key and download it as a JSON
 
-It's also best practice to store the Terraform state in GCS's cloud storage. This will be
-used to store the `tfstate` in the cloud, rather than keeping them locally. Create a bucket,
-and make sure to block all public access (the tfstate will contain secrets).
+### Create GCS bucket for Terraform state
+
+It's best practice to store the Terraform state in GCP's cloud storage. This will be
+used to store the `tfstate` in the cloud, rather than keeping them locally.
+
+To create a state bucket:
+
+- Go to `Cloud Storage` and create a new bucket
+- Choose a unique name (e.g., `terraform-state-fg-myproject`)
+- Make sure to block all public access (the tfstate will contain secrets)
+- Note the bucket name - you'll need it for the `backend.tfvars` configuration
 
 ### Use these credentials
 
@@ -43,21 +52,42 @@ gcloud auth application-default login
 Whichever method you choose, the provider in the Terraform package will pick up the default
 credentials.
 
-### Run Terraform
+### Configure Terraform Backend
 
-Configure the variables. Note that some of them you'll find on the Foxglove
-[Settings page](https://app.foxglove.dev/~/settings/sites), under the Sites
-tab.
+First, configure the Terraform backend to store state in GCS:
+
+1. Copy `backend.tfvars-example` to `backend.tfvars`
+2. Update the variables in `backend.tfvars`:
+
+3. Initialize Terraform with the backend configuration:
+   ```
+   terraform init --backend-config backend.tfvars
+   ```
+
+   After initialization, your GCS bucket will have a structure similar to this:
+   ```
+   <bucket>
+   |--primarysite (Directory)
+     |--my-environment (Directory)
+       |--default.tfstate (File)
+   ```
+
+### Configure Terraform Variables
+
+Next, configure the main Terraform variables. Note that some of them you'll find on the Foxglove
+[Settings page](https://app.foxglove.dev/~/settings/sites), under the Sites tab.
 
 1. Copy `terraform.tfvars-example` to `terraform.tfvars`
-2. Use the `inbox_notification_endpoint` variable from the Foxglove site settings.
-3. Change the other variables as needed
-4. Copy `backend.tfvars-example` to `backend.tfvars`
-5. Set the bucket name and region to what was created in the "Getting started" step; key can
-   be any object key.
-6. Run `terraform init --backend-config backend.tfvars`
+2. Update the variables in `terraform.tfvars`:
 
-You should now be able to run `terraform plan` and `terraform apply`.
+### Deploy Resources
+
+Once both configuration files are set up, you can deploy the resources:
+
+```
+terraform plan
+terraform apply
+```
 
 ## Modules
 

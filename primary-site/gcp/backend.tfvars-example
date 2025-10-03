@@ -1,3 +1,2 @@
-bucket = "terraform-state-fg-CHANGEME"
-prefix = "primarysite/CHANGEME/terraform.tfstate"
-
+bucket = "terraform-state-fg-CHANGEME"  # The name of the GCS bucket you created in the "Create GCS bucket for Terraform state" step for storing Terraform state
+prefix = "primarysite/my-environment"  # The path/prefix for your Terraform state file (e.g., `primarysite/my-environment`)
