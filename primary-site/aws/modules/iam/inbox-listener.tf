@@ -39,7 +39,8 @@ resource "aws_iam_policy" "inbox_listener_policy" {
 
 module "eks_inbox_listener_sa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-
+  version = "5.60.0"
+  
   role_name = "${var.eks_foxglove_namespace}-inbox-listener-sa-role"
 
   oidc_providers = {
