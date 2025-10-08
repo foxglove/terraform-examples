@@ -12,9 +12,9 @@ this template, allowing the services to connect to the inbox and lake buckets.
 
 ## Prerequisites 
 
-* a custom domain with an HTTPS certificate 
-* create new inbox notification endpoint in Foxglove settings
-* create new site token in Foxglove settings
+* a custom domain with an HTTPS certificate, certificate ARN from ACM console
+* inbox notification endpoint in Foxglove settings
+* site token in Foxglove settings
 
 ## Getting started
 
@@ -65,16 +65,49 @@ aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
 # check ingress, should see a a domain that looks like this
 kubectl describe ingress site -n foxglove
 
+# Name:             site
+# Labels:           app.kubernetes.io/managed-by=Helm
+# Namespace:        foxglove
+# Address:          k8s-foxglove-site-d243fa5f2c-1094290762.us-west-1.elb.amazonaws.com
+# Ingress Class:    alb
+# Default backend:  <default>
+
 # find pods 
-kubectl get pods
+kubectl get pods -n foxglove
 
 # view logs 
-kubectl logs $POD -f
+kubectl -n foxglove logs $POD -f
 
-# restart things 
+# restart things if changes needed
 kubectl rollout restart deployment -n foxglove
-kubectl rollout restart deployment aws-load-balancer-controller -n foxglove
 ```
+
+### Configure Domain 
+
+Create a CNAME record on the domain you want to use to access your primary site and update it to your ingress address. In the example above the CNAME value would be `k8s-foxglove-site-d243fa5f2c-1094290762.us-west-1.elb.amazonaws.com`.
+
+### Test File 
+
+You can watch the inbox listener logs to make sure files are being processed properly. 
+
+```bash
+
+# find all pods
+kubectl get pods -n foxglove       
+
+NAME                                           READY   STATUS             RESTARTS      AGE
+aws-load-balancer-controller-ff4b8954f-2x5pg   1/1     Running            0             11m
+aws-load-balancer-controller-ff4b8954f-62fkx   1/1     Running            0             12m
+garbage-collector-29332770-xqzvx               0/1     CrashLoopBackOff   5 (25s ago)   5m40s
+inbox-listener-668889fcb9-9lvbp                1/1     Running            0             19m
+query-service-5ff9b5b8dc-c4lxc                 1/1     Running            0             19m
+site-controller-fcb86f966-2v67l                1/1     Running            0             19
+
+# watch inbox listener
+kubectl -n foxglove logs inbox-listener-668889fcb9-9lvbp -f 
+```
+
+Once its running, upload a file to the inbox bucket in S3. You should see the file being processed and it should now show up in the recordings section in the Foxglove app.
 
 ## Modules
 

@@ -166,7 +166,7 @@ resource "kubernetes_service_account" "stream_service" {
     name      = "stream-service"
     namespace = kubernetes_namespace.foxglove.metadata[0].name
     annotations = {
-      "eks.amazonaws.com/role-arn" = module.iam.iam_stream_service_role_arn
+      "eks.amazonaws.com/role-arn" = module.iam.iam_query_service_role_arn
     }
   }
 }
@@ -201,7 +201,7 @@ resource "helm_release" "foxglove_primary_site" {
       lake_bucket_name      = var.lake_bucket_name
       inbox_bucket_name     = var.inbox_bucket_name
       inbox_listener_role_arn   = module.iam.iam_inbox_listener_role_arn
-      stream_service_role_arn   = module.iam.iam_stream_service_role_arn
+      query_service_role_arn   = module.iam.iam_query_service_role_arn
       garbage_collector_role_arn = module.iam.iam_garbage_collector_role_arn
       aws_load_balancer_controller_role_arn = module.iam.iam_aws_load_balancer_controller_role_arn
     })

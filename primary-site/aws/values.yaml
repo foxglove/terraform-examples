@@ -29,11 +29,11 @@ inboxListener:
     annotations:
       eks.amazonaws.com/role-arn: ${inbox_listener_role_arn}
 
-streamService:
+queryService:
   serviceAccount:
     enabled: true
     annotations:
-      eks.amazonaws.com/role-arn: ${stream_service_role_arn}
+      eks.amazonaws.com/role-arn: ${query_service_role_arn}
 
 garbageCollector:
   serviceAccount:
