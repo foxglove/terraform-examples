@@ -59,5 +59,5 @@ variable "certificate_arn" {
 variable "foxglove_chart_version" {
   type        = string
   description = "Version of the Foxglove primary-site Helm chart"
-  default     = "latest"
+  default     = "0.0.80"
 }

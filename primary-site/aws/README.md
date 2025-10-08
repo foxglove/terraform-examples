@@ -12,7 +12,9 @@ this template, allowing the services to connect to the inbox and lake buckets.
 
 ## Prerequisites 
 
-* a custom domain with an HTTPS certificate
+* a custom domain with an HTTPS certificate 
+* create new inbox notification endpoint in Foxglove settings
+* create new site token in Foxglove settings
 
 ## Getting started
 
@@ -53,6 +55,26 @@ under the Sites tab.
 6. Run `terraform init --backend-config backend.tfvars`
 
 You should now be able to run `terraform plan` and `terraform apply`.
+
+### Test to see that everything worked
+
+```bash
+# configure kubectl to connect to your cluster
+aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
+
+# check ingress, should see a a domain that looks like this
+kubectl describe ingress site -n foxglove
+
+# find pods 
+kubectl get pods
+
+# view logs 
+kubectl logs $POD -f
+
+# restart things 
+kubectl rollout restart deployment -n foxglove
+kubectl rollout restart deployment aws-load-balancer-controller -n foxglove
+```
 
 ## Modules
 
