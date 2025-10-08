@@ -1,0 +1,46 @@
+globals:
+  lake:
+    storageProvider: aws
+    bucketName: ${lake_bucket}
+  inbox:
+    storageProvider: aws
+    bucketName: ${inbox_bucket}
+  aws:
+    region: ${region}
+ingress:
+  enabled: true
+  className: alb
+  annotations: 
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: ${certificate_arn}
+
+# Service accounts for each service
+inboxListener:
+  serviceAccount:
+    enabled: true
+    annotations:
+      eks.amazonaws.com/role-arn: ${inbox_listener_role_arn}
+
+streamService:
+  serviceAccount:
+    enabled: true
+    annotations:
+      eks.amazonaws.com/role-arn: ${stream_service_role_arn}
+
+garbageCollector:
+  serviceAccount:
+    enabled: true
+    annotations:
+      eks.amazonaws.com/role-arn: ${garbage_collector_role_arn}
+
+# AWS Load Balancer Controller service account
+serviceAccount:
+  name: aws-load-balancer-controller
+
+clusterName: ${cluster_name}
+region: ${region}
+vpcId: ${vpc_id}

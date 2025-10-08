@@ -44,3 +44,20 @@ variable "eks_cluster_version" {
   type        = string
   default     = "1.27"
 }
+
+variable "foxglove_site_token" {
+  type        = string
+  description = "Foxglove site token for authentication"
+  sensitive   = true
+}
+
+variable "certificate_arn" {
+  type        = string
+  description = "ARN of the SSL certificate for the load balancer"
+}
+
+variable "foxglove_chart_version" {
+  type        = string
+  description = "Version of the Foxglove primary-site Helm chart"
+  default     = "latest"
+}

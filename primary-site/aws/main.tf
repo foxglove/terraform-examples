@@ -128,3 +128,127 @@ module "iam" {
   eks_oidc_provider_arn  = module.eks.oidc_provider_arn
   eks_foxglove_namespace = "foxglove"
 }
+
+## ----- Kubernetes Resources -----
+
+# Create the foxglove namespace
+resource "kubernetes_namespace" "foxglove" {
+  metadata {
+    name = "foxglove"
+  }
+}
+
+# Create the Foxglove site token secret
+resource "kubernetes_secret" "foxglove_site_token" {
+  metadata {
+    name      = "foxglove-site-token"
+    namespace = kubernetes_namespace.foxglove.metadata[0].name
+  }
+
+  data = {
+    FOXGLOVE_SITE_TOKEN = var.foxglove_site_token
+  }
+}
+
+# Service Accounts for each Service 
+resource "kubernetes_service_account" "inbox_listener" {
+  metadata {
+    name      = "inbox-listener"
+    namespace = kubernetes_namespace.foxglove.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam.iam_inbox_listener_role_arn
+    }
+  }
+}
+
+resource "kubernetes_service_account" "stream_service" {
+  metadata {
+    name      = "stream-service"
+    namespace = kubernetes_namespace.foxglove.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam.iam_stream_service_role_arn
+    }
+  }
+}
+
+resource "kubernetes_service_account" "garbage_collector" {
+  metadata {
+    name      = "garbage-collector"
+    namespace = kubernetes_namespace.foxglove.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = module.iam.iam_garbage_collector_role_arn
+    }
+  }
+}
+
+## ----- Helm Releases -----
+
+# Deploy the Foxglove primary-site application
+resource "helm_release" "foxglove_primary_site" {
+  name       = "foxglove-primary-site"
+  repository = "https://helm-charts.foxglove.dev"
+  chart      = "primary-site"
+  namespace  = kubernetes_namespace.foxglove.metadata[0].name
+  version    = var.foxglove_chart_version
+
+  # Use the values.yaml file with template variables
+  values = [
+    templatefile("${path.module}/values.yaml", {
+      cluster_name    = var.eks_cluster_name
+      region          = var.aws_region
+      vpc_id          = module.vpc.vpc_id
+      certificate_arn = var.certificate_arn
+      lake_bucket     = var.lake_bucket_name
+      inbox_bucket    = var.inbox_bucket_name
+      inbox_listener_role_arn   = module.iam.iam_inbox_listener_role_arn
+      stream_service_role_arn   = module.iam.iam_stream_service_role_arn
+      garbage_collector_role_arn = module.iam.iam_garbage_collector_role_arn
+    })
+  ]
+
+  depends_on = [
+    kubernetes_secret.foxglove_site_token,
+    kubernetes_service_account.inbox_listener,
+    kubernetes_service_account.stream_service,
+    kubernetes_service_account.garbage_collector,
+    helm_release.aws_load_balancer_controller
+  ]
+}
+
+# Deploy the AWS Load Balancer Controller
+resource "helm_release" "aws_load_balancer_controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = kubernetes_namespace.foxglove.metadata[0].name
+  version    = "1.13.0"
+
+  set {
+    name  = "clusterName"
+    value = var.eks_cluster_name
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
+
+  set {
+    name  = "region"
+    value = var.aws_region
+  }
+
+  set {
+    name  = "vpcId"
+    value = module.vpc.vpc_id
+  }
+
+  depends_on = [
+    module.iam
+  ]
+}
