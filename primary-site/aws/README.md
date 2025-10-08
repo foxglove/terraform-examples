@@ -10,6 +10,10 @@ EKS cluster, and use the included S3 buckets for inbox and lake.
 The Helm chart's service accounts need to be configured to use the IAM roles created by
 this template, allowing the services to connect to the inbox and lake buckets.
 
+## Prerequisites 
+
+* a custom domain with an HTTPS certificate
+
 ## Getting started
 
 ### Configure the AWS Terraform provider
@@ -66,7 +70,7 @@ You should now be able to run `terraform plan` and `terraform apply`.
 ## Production use
 
 This Terraform example creates all resources that are needed for a working Foxglove Primary
-Site deployment: the VPC, EKS cluster, IAM roles, S3 buckets and the SNS topic. For production
+Site deployment: the VPC, EKS cluster, IAM roles, S3 buckets, the SNS topic and the AWS Load Balancer Controller add-on. For production
 use, consider the following:
 
 ### Connecting to the cluster
@@ -75,13 +79,6 @@ By default, only the creator Terraform user will be able to connect to this EKS 
 Read the AWS docs about [adding other IAM users and roles](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html),
 or set `manage_aws_auth_configmap = true` in the eks module (will require setting up the
 "kubernetes" provider).
-
-### AWS Load Balancer Controller
-
-To provisions an AWS Application Load Balancer (ALB) when a Kubernetes Ingress is created,
-the AWS Load Balancer Controller needs to be installed in the cluster. Follow the
-[AWS user guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
-to set up this add-on.
 
 ### CoreDns on Fargate
 

@@ -1,16 +1,20 @@
+# Foxglove Primary Site Helm Values
+# Used with Terraform helm_release resource
 globals:
   lake:
     storageProvider: aws
-    bucketName: ${lake_bucket}
+    bucketName: ${lake_bucket_name}
   inbox:
     storageProvider: aws
-    bucketName: ${inbox_bucket}
+    bucketName: ${inbox_bucket_name}
   aws:
-    region: ${region}
+    region: ${aws_region}
+
+# Ingress configuration for AWS Application Load Balancer
 ingress:
   enabled: true
   className: alb
-  annotations: 
+  annotations:
     kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
@@ -18,7 +22,7 @@ ingress:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: ${certificate_arn}
 
-# Service accounts for each service
+# Service accounts for Foxglove services
 inboxListener:
   serviceAccount:
     enabled: true
@@ -37,10 +41,13 @@ garbageCollector:
     annotations:
       eks.amazonaws.com/role-arn: ${garbage_collector_role_arn}
 
-# AWS Load Balancer Controller service account
-serviceAccount:
-  name: aws-load-balancer-controller
-
-clusterName: ${cluster_name}
-region: ${region}
-vpcId: ${vpc_id}
+# AWS Load Balancer Controller configuration
+awsLoadBalancerController:
+  enabled: true
+  serviceAccount:
+    name: aws-load-balancer-controller
+    annotations:
+      eks.amazonaws.com/role-arn: ${aws_load_balancer_controller_role_arn}
+  clusterName: ${eks_cluster_name}
+  region: ${aws_region}
+  vpcId: ${vpc_id}
