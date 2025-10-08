@@ -194,15 +194,16 @@ resource "helm_release" "foxglove_primary_site" {
   # Use the values.yaml file with template variables
   values = [
     templatefile("${path.module}/values.yaml", {
-      cluster_name    = var.eks_cluster_name
-      region          = var.aws_region
+      eks_cluster_name    = var.eks_cluster_name
+      aws_region          = var.aws_region
       vpc_id          = module.vpc.vpc_id
       certificate_arn = var.certificate_arn
-      lake_bucket     = var.lake_bucket_name
-      inbox_bucket    = var.inbox_bucket_name
+      lake_bucket_name      = var.lake_bucket_name
+      inbox_bucket_name     = var.inbox_bucket_name
       inbox_listener_role_arn   = module.iam.iam_inbox_listener_role_arn
       stream_service_role_arn   = module.iam.iam_stream_service_role_arn
       garbage_collector_role_arn = module.iam.iam_garbage_collector_role_arn
+      aws_load_balancer_controller_role_arn = module.iam.iam_aws_load_balancer_controller_role_arn
     })
   ]
 
