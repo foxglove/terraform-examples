@@ -109,6 +109,15 @@ kubectl -n foxglove logs inbox-listener-668889fcb9-9lvbp -f
 
 Once its running, upload a file to the inbox bucket in S3. You should see the file being processed and it should now show up in the recordings section in the Foxglove app.
 
+```
+{"timestamp":"2025-10-09T00:18:20.949464617Z","severity":"INFO","message":"Running in single-tenant mode for aws"}
+{"timestamp":"2025-10-09T00:18:20.949952133Z","severity":"INFO","message":"starting metrics server on 0.0.0.0:6001"}
+{"timestamp":"2025-10-09T00:18:20.950066913Z","severity":"INFO","message":"starting liveness server on 0.0.0.0:6002"}
+{"timestamp":"2025-10-09T00:19:11.674249175Z","severity":"INFO","message":"Received notification","filename":"rosbag2_2025_10_08-23_48_06_0.mcap","org_id":"org_0dt1PzqrMVLYScLC","request_id":"b563d329d4f5a8e8c9e452ec752840b593ea1b05"}
+{"timestamp":"2025-10-09T00:19:11.674388847Z","severity":"INFO","message":"Using WebIdentity credential provider","attempt_id":"ade3ea09-6413-4f48-a211-6e3701f23950","filename":"rosbag2_2025_10_08-23_48_06_0.mcap","org_id":"org_0dt1PzqrMVLYScLC","request_id":"b563d329d4f5a8e8c9e452ec752840b593ea1b05"}
+{"timestamp":"2025-10-09T00:19:11.894253238Z","severity":"INFO","message":"transcoding mcap file to levlaz-aws-lake-bucket/tmp/20251009/ade3ea09-6413-4f48-a211-6e3701f23950","attempt_id":"ade3ea09-6413-4f48-a211-6e3701f23950","inbox_bucket":"levlaz-aws-inbox-bucket","lake_bucket":"levlaz-aws-lake-bucket","output_prefix":"tmp/20251009/ade3ea09-6413-4f48-a211-6e3701f23950","user_filename":"rosbag2_2025_10_08-23_48_06_0.mcap","filename":"rosbag2_2025_10_08-23_48_06_0.mcap","org_id":"org_0dt1PzqrMVLYScLC","request_id":"b563d329d4f5a8e8c9e452ec752840b593ea1b05"}
+```
+
 ## Modules
 
 - `iam`: creates the IAM roles to be used by the service accounts. Make sure to configure

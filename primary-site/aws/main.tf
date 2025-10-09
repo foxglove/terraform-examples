@@ -150,37 +150,6 @@ resource "kubernetes_secret" "foxglove_site_token" {
   }
 }
 
-# Service Accounts for each Service 
-resource "kubernetes_service_account" "inbox_listener" {
-  metadata {
-    name      = "inbox-listener"
-    namespace = kubernetes_namespace.foxglove.metadata[0].name
-    annotations = {
-      "eks.amazonaws.com/role-arn" = module.iam.iam_inbox_listener_role_arn
-    }
-  }
-}
-
-resource "kubernetes_service_account" "stream_service" {
-  metadata {
-    name      = "stream-service"
-    namespace = kubernetes_namespace.foxglove.metadata[0].name
-    annotations = {
-      "eks.amazonaws.com/role-arn" = module.iam.iam_query_service_role_arn
-    }
-  }
-}
-
-resource "kubernetes_service_account" "garbage_collector" {
-  metadata {
-    name      = "garbage-collector"
-    namespace = kubernetes_namespace.foxglove.metadata[0].name
-    annotations = {
-      "eks.amazonaws.com/role-arn" = module.iam.iam_garbage_collector_role_arn
-    }
-  }
-}
-
 ## ----- Helm Releases -----
 
 # Deploy the Foxglove primary-site application
@@ -209,9 +178,6 @@ resource "helm_release" "foxglove_primary_site" {
 
   depends_on = [
     kubernetes_secret.foxglove_site_token,
-    kubernetes_service_account.inbox_listener,
-    kubernetes_service_account.stream_service,
-    kubernetes_service_account.garbage_collector,
     helm_release.aws_load_balancer_controller
   ]
 }

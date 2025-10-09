@@ -24,22 +24,26 @@ ingress:
 
 # Service accounts for Foxglove services
 inboxListener:
-  serviceAccount:
-    enabled: true
-    annotations:
-      eks.amazonaws.com/role-arn: ${inbox_listener_role_arn}
+  deployment:
+    serviceAccount:
+      enabled: true
+      annotations:
+        eks.amazonaws.com/role-arn: ${inbox_listener_role_arn}
 
 queryService:
-  serviceAccount:
-    enabled: true
-    annotations:
-      eks.amazonaws.com/role-arn: ${query_service_role_arn}
+  deployment:
+    serviceAccount:
+      enabled: true
+      annotations:
+        eks.amazonaws.com/role-arn: ${query_service_role_arn}
 
 garbageCollector:
-  serviceAccount:
-    enabled: true
-    annotations:
-      eks.amazonaws.com/role-arn: ${garbage_collector_role_arn}
+  deployment:
+    serviceAccount:
+      enabled: true
+      annotations:
+        eks.amazonaws.com/role-arn: ${garbage_collector_role_arn}
+
 
 # AWS Load Balancer Controller configuration
 awsLoadBalancerController:
