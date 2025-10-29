@@ -15,7 +15,7 @@ output "client_secret" {
 }
 
 output "kube_config" {
-  value       = azurerm_kubernetes_cluster.cluster.kube_config_raw
+  value       = module.kubernetes_cluster.kube_config
   sensitive   = true
   description = "Kube config for the created Kubernetes cluster"
 }
