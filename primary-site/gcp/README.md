@@ -7,6 +7,14 @@ Use these templates to create resources for a Foxglove Primary Site.
 Once the resources are created, you'll be able to deploy the Helm charts into the created
 GKS Autopilot cluster, and use the included storage buckets for inbox and lake.
 
+This template includes Terraform modules for:
+
+- **IAM** – creates a service account with access to the storage buckets  
+- **Storage** – provisions inbox and lake buckets  
+- **Pub/Sub** – sets up notifications for new objects in the inbox  
+
+See the [Modules](#modules) section below for more details.
+
 The template's IAM user is created with a private key, which can be used in the
 Kubernetes cluster's `cloud-credentials` secret, allowing the services to connect to the
 inbox and lake buckets.
