@@ -83,4 +83,30 @@ resource "google_container_cluster" "cluster" {
     cluster_secondary_range_name  = module.vpc.subnets_secondary_ranges[0][0].range_name
     services_secondary_range_name = module.vpc.subnets_secondary_ranges[0][1].range_name
   }
+  dns_config {
+    cluster_dns        = "CLOUD_DNS"
+    cluster_dns_domain = "cluster.local"
+    cluster_dns_scope  = "CLUSTER_SCOPE"
+  }
+}
+
+## ----- Workload Identity -----
+
+resource "kubernetes_namespace" "foxglove" {
+  metadata {
+    name = "foxglove"
+  }
+  depends_on = [google_container_cluster.cluster]
+}
+
+resource "kubernetes_annotations" "default_sa_workload_identity" {
+  api_version = "v1"
+  kind        = "ServiceAccount"
+  metadata {
+    name      = "default"
+    namespace = kubernetes_namespace.foxglove.metadata[0].name
+  }
+  annotations = {
+    "iam.gke.io/gcp-service-account" = module.iam.service_account_email
+  }
 }
