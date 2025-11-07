@@ -10,3 +10,6 @@ bucket_delete_num_newer_version          = 3  # Number of newer versions to reta
 
 inbox_notification_endpoint = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"  # Webhook endpoint from the Foxglove site settings
 primarysite_iam_user_name   = "org-slug-primarysite-user"  # Name for the IAM service account
+
+managed_cert_name    = "ssl-cert-name"
+managed_cert_domains = ["external_domain_name"]

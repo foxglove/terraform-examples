@@ -47,3 +47,13 @@ variable "cluster_name" {
   type        = string
   description = "Name of the Autopilot cluster"
 }
+
+variable "managed_cert_name" {
+  type        = string
+  description = "Name of the GKE managed certificate"
+}
+
+variable "managed_cert_domains" {
+  type        = list(string)
+  description = "List of domains for the managed certificate"
+}

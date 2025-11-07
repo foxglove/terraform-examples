@@ -110,3 +110,20 @@ resource "kubernetes_annotations" "default_sa_workload_identity" {
     "iam.gke.io/gcp-service-account" = module.iam.service_account_email
   }
 }
+
+## ----- Managed Certificate -----
+
+resource "kubernetes_manifest" "managed_certificate" {
+  manifest = {
+    apiVersion = "networking.gke.io/v1"
+    kind       = "ManagedCertificate"
+    metadata = {
+      name      = var.managed_cert_name
+      namespace = kubernetes_namespace.foxglove.metadata[0].name
+    }
+    spec = {
+      domains = var.managed_cert_domains
+    }
+  }
+  depends_on = [google_container_cluster.cluster]
+}
