@@ -25,7 +25,28 @@ inbox and lake buckets.
 
 Terraform needs a GCP project and a service account with project owner permissions.
 
-To add a new service account with a private key:
+**Using gcloud CLI:**
+
+```bash
+# Set your project ID (find it in GCP Console dashboard or run: gcloud projects list)
+PROJECT_ID="your-project-id"
+gcloud config set project $PROJECT_ID
+
+# Create the service account
+gcloud iam service-accounts create terraform-admin \
+  --display-name="Terraform Admin"
+
+# Grant Owner role
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:terraform-admin@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/owner"
+
+# Create and download JSON key
+gcloud iam service-accounts keys create terraform-admin-key.json \
+  --iam-account="terraform-admin@${PROJECT_ID}.iam.gserviceaccount.com"
+```
+
+**Using GCP Console:**
 
 - Select `IAM & Admin` and then `Service Accounts`
 - Select `Create service account`
@@ -38,7 +59,17 @@ To add a new service account with a private key:
 It's best practice to store the Terraform state in GCP's cloud storage. This will be
 used to store the `tfstate` in the cloud, rather than keeping them locally.
 
-To create a state bucket:
+**Using gcloud CLI:**
+
+```bash
+# Bucket names must be globally unique
+BUCKET_NAME="terraform-state-${PROJECT_ID}"
+
+gcloud storage buckets create gs://${BUCKET_NAME} \
+  --uniform-bucket-level-access
+```
+
+**Using GCP Console:**
 
 - Go to `Cloud Storage` and create a new bucket
 - Choose a unique name (e.g., `terraform-state-fg-myproject`)
