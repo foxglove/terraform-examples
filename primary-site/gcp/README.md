@@ -66,7 +66,6 @@ used to store the `tfstate` in the cloud, rather than keeping them locally.
 BUCKET_NAME="terraform-state-${PROJECT_ID}"
 
 gcloud storage buckets create gs://${BUCKET_NAME} \
-  --location=us-west2 \
   --uniform-bucket-level-access
 ```
 
