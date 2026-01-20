@@ -154,3 +154,67 @@ PubSub. The next step is to connect to the cluster, and then deploy the
 [helm charts](https://helm-charts.foxglove.dev).
 
 See how to connect to the cluster using the [gcloud CLI here](https://cloud.google.com/sdk/gcloud/reference/container/clusters/get-credentials).
+
+
+## Example Configuration
+
+Here is a minimal example of how to define global storage and ingress settings in your `values.yaml` file:
+
+```yaml
+globals:
+  lake:
+    storageProvider: google_cloud
+    bucketName: <lake-bucket>
+  inbox:
+    storageProvider: google_cloud
+    bucketName: <inbox-bucket>
+
+ingress:
+  enabled: true
+  className: gce
+  host: <your-domain>
+  annotations:
+    networking.gke.io/managed-certificates: ingress-cert
+    kubernetes.io/ingress.class: gce
+```
+
+## Ingress Managed Certificate
+
+On GKE, you can configure the ingress to use a **Google-managed SSL certificate**.  
+This is done by creating a `ManagedCertificate` resource and referencing it in the ingress annotations (as shown above with `networking.gke.io/managed-certificates: <ingress-cert>`).
+
+Here’s an example of a `cert.yaml` manifest:
+
+```yaml
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: <ingress-cert>
+spec:
+  domains:
+    - <your-domain>
+```
+
+- Replace `<your-domain>` with the hostname specified under `ingress.host` in your `values.yaml`.
+- Once applied, GKE will automatically provision and attach the managed certificate to your ingress when the domain points to the load balancer.
+
+## Deploying with Helm
+
+After creating your certificate and configuration files, deploy them using the following commands:
+
+1. **Apply the managed certificate:**
+
+   ```bash
+   kubectl apply -f cert.yaml
+   ```
+
+2. **Install or upgrade the Helm release with your custom values:**
+
+   ```bash
+   helm upgrade --install foxglove-primary-site \
+     oci://helm-charts.foxglove.dev/primary-site \
+     -f values.yaml
+   ```
+
+   - Replace `foxglove-primary-site` with your preferred release name.
+   - Ensure your cluster context is correctly set before running these commands (`kubectl config current-context`).
