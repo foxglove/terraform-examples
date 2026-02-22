@@ -1,0 +1,10 @@
+gcp_project  = "my-project-id"
+gcp_region   = "us-west2"
+vpc_name     = "org-slug-rdl-vpc"
+cluster_name = "org-slug-rdl-cluster"
+
+cache_bucket_name                        = "org-slug-rdl-cache-bucket"
+bucket_delete_days_since_noncurrent_time = 14
+bucket_delete_num_newer_version          = 3
+
+iam_user_name = "org-slug-rdl-user"

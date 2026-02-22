@@ -1,0 +1,4 @@
+output "iam_remote_data_loader_role_arn" {
+  value       = module.eks_remote_data_loader_sa_role.iam_role_arn
+  description = "ARN for the role to be added to remote data loader pods"
+}

@@ -1,0 +1,7 @@
+aws_region        = "us-east-1"
+cache_bucket_name = "org-slug-rdl-cache-bucket"
+vpc_name          = "org-slug-rdl-vpc"
+eks_cluster_name  = "org-slug-rdl-cluster"
+eks_cluster_version = "1.27"
+
+abort_incomplete_multipart_upload_days = 5

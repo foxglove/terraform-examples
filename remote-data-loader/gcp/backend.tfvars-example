@@ -1,0 +1,2 @@
+bucket = "terraform-state-fg-CHANGEME"
+prefix = "remote-data-loader/my-environment"

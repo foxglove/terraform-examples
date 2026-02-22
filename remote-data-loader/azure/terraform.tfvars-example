@@ -1,0 +1,12 @@
+resource_group_name      = "<resource_group_name>"
+resource_location        = "Central US"
+application_display_name = "org-slug-rdl-application"
+
+storage_account_name             = "fgrdl$RANDOM"
+deleted_blob_retention_days      = 7
+deleted_container_retention_days = 7
+
+cluster_name      = "org-slug-rdl-cluster"
+cluster_min_nodes = 1
+cluster_max_nodes = 4
+cluster_vm_size   = "Standard_D4_v2"
