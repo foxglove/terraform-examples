@@ -9,8 +9,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
     id     = "${var.bucket_name}-delete-incomplete-uploads-rule"
     status = "Enabled"
 
-    # At least one filter rule is required by Terraform.
-    # Default to an empty prefix to include everything.
     filter {
       prefix = ""
     }
@@ -24,7 +22,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucket_lifecycle" {
   # remove their backing objects the following day.
   #
   # This rule is only required for the inbox bucket, but it will have no impact on
-  # the lake bucket so it is fine here.
+  # other buckets so it is fine here.
   rule {
     id     = "${var.bucket_name}-delete-old-quarantined-files"
     status = "Enabled"

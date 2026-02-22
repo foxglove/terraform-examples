@@ -53,7 +53,7 @@ module "primary_site_iam" {
 ## ----- Kubernetes cluster -----
 
 module "kubernetes_cluster" {
-  source = "./modules/k8s"
+  source = "../../modules/azure/aks-cluster"
 
   resource_group_name = var.resource_group_name
   resource_location   = var.resource_location

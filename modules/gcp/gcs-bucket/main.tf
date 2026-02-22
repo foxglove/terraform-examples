@@ -28,7 +28,7 @@ resource "google_storage_bucket" "bucket" {
   }
 
   # Deleting `tmp/` prefixed objects is required for the lake bucket only, but has
-  # no impact on the inbox bucket
+  # no impact on other buckets.
   lifecycle_rule {
     action {
       type = "Delete"
@@ -43,8 +43,8 @@ resource "google_storage_bucket" "bucket" {
   # Failed imports are cleaned up in the control plane after a year, this rule will
   # remove their backing objects the following day.
   #
-  # This rule is only required for the inbox bucket to the inbox bucket, but will
-  # have no impact on the lake bucket.
+  # This rule is only required for the inbox bucket, but will have no impact on
+  # other buckets.
   lifecycle_rule {
     action {
       type = "Delete"
