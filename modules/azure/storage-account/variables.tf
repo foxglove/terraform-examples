@@ -10,7 +10,7 @@ variable "resource_location" {
 
 variable "storage_account_name" {
   type        = string
-  description = "Name of the storage account to hold the `inbox` and `lake` containers"
+  description = "Name of the storage account"
 }
 
 variable "deleted_blob_retention_days" {

@@ -1,25 +1,18 @@
 ## ----- Storage -----
 
-resource "azurerm_storage_account" "storage" {
-  name                     = var.storage_account_name
-  resource_group_name      = var.resource_group_name
-  location                 = var.resource_location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+module "storage_account" {
+  source = "../../modules/azure/storage-account"
 
-  blob_properties {
-    delete_retention_policy {
-      days = var.deleted_blob_retention_days
-    }
-    container_delete_retention_policy {
-      days = var.deleted_container_retention_days
-    }
-  }
+  resource_group_name         = var.resource_group_name
+  resource_location           = var.resource_location
+  storage_account_name        = var.storage_account_name
+  deleted_blob_retention_days      = var.deleted_blob_retention_days
+  deleted_container_retention_days = var.deleted_container_retention_days
 }
 
 resource "azurerm_storage_container" "cache" {
   name                  = "cache"
-  storage_account_name  = azurerm_storage_account.storage.name
+  storage_account_name  = module.storage_account.storage_account_name
   container_access_type = "private"
 }
 
@@ -28,9 +21,9 @@ resource "azurerm_storage_container" "cache" {
 module "iam" {
   source = "./modules/iam"
 
-  resource_group_name      = var.resource_group_name
-  storage_account_name     = azurerm_storage_account.storage.name
-  application_display_name = var.application_display_name
+  resource_group_name          = var.resource_group_name
+  storage_account_name         = module.storage_account.storage_account_name
+  application_display_name     = var.application_display_name
   cache_storage_container_name = azurerm_storage_container.cache.name
 }
 

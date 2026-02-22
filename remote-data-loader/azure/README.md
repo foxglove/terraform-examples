@@ -38,4 +38,6 @@ You should now be able to run `terraform plan` and `terraform apply`.
 
 This deployment uses shared modules from `../../modules/azure/`:
 
+- `storage-account`: creates the storage account with blob retention policies. The `cache`
+  container is created locally by this deployment.
 - `aks-cluster`: creates an AKS cluster with auto-scaling node pools and log analytics.

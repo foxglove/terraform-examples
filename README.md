@@ -29,4 +29,5 @@ cloud provider:
 * `modules/aws/eks-cluster` — VPC and EKS cluster
 * `modules/gcp/gcs-bucket` — GCS bucket with versioning and lifecycle rules
 * `modules/gcp/gke-cluster` — VPC and GKE Autopilot cluster
+* `modules/azure/storage-account` — Azure storage account with blob retention policies
 * `modules/azure/aks-cluster` — AKS cluster with auto-scaling

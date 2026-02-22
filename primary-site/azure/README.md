@@ -76,8 +76,13 @@ When using existing storage, the storage module is skipped entirely, and the tem
   container. Whenever a new object appears in the storage container, the webhook
   `inbox_notification_endpoint` will be notified.
 
-- `storage`: creates the storage account with the `lake` and `inbox` containers and private
-  access. This module is only used when `use_existing_storage = false`.
+## Shared modules
 
-- `k8s`: creates a kubernetes cluster, and outputs the connection details in the `tfstate`, under
+This deployment uses shared modules from `../../modules/azure/`:
+
+- `storage-account`: creates the storage account with blob retention policies. The `inbox` and `lake`
+  containers and management policies are created locally by this deployment. This module is only used
+  when `use_existing_storage = false`.
+
+- `aks-cluster`: creates a kubernetes cluster, and outputs the connection details in the `tfstate`, under
   the `kube_config_raw` key.
