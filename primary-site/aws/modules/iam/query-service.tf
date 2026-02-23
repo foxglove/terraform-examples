@@ -30,14 +30,14 @@ resource "aws_iam_policy" "query_service_policy" {
 }
 
 module "eks_query_service_sa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.60.0"
 
   role_name = "${var.eks_foxglove_namespace}-query-service-sa-role"
 
   oidc_providers = {
     main = {
-      provider_arn = var.eks_oidc_provider_arn
+      provider_arn               = var.eks_oidc_provider_arn
       namespace_service_accounts = [
         "${var.eks_foxglove_namespace}:query-service"
       ]

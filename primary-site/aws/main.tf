@@ -38,7 +38,7 @@ module "vpc" {
   # EKS VPC and subnet requirements and considerations
   # https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
   cidr            = "10.0.0.0/16"
-  azs             = data.aws_availability_zones.available.names
+  azs = data.aws_availability_zones.available.names
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
@@ -67,15 +67,12 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "20.31.0"
+  version = "19.15.3"
 
   cluster_name                    = var.eks_cluster_name
   cluster_version                 = var.eks_cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
-
-  # Allow the Terraform user to access the cluster
-  enable_cluster_creator_admin_permissions = true
 
   cluster_addons = {
     kube-proxy = {}
@@ -94,7 +91,9 @@ module "eks" {
   create_node_security_group    = false
 
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
+    ami_type                              = "AL2_x86_64"
+    attach_cluster_primary_security_group = true
+    create_security_group                 = false
   }
 
   eks_managed_node_groups = {
@@ -113,8 +112,9 @@ module "eks" {
     # the `foxglove` namespace. All workloads in this namespace will be run by the
     # Fargate scheduler.
     foxglove = {
-      name      = "foxglove"
-      selectors = [{ namespace = "foxglove" }]
+      create_iam_role = true
+      name            = "foxglove"
+      selectors       = [{ namespace = "foxglove" }]
     }
   }
 }

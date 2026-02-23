@@ -3,7 +3,7 @@ inbox_bucket_name = "org-slug-inbox-bucket"
 lake_bucket_name  = "org-slug-lake-bucket"
 vpc_name          = "org-slug-vpc"
 eks_cluster_name  = "org-slug-cluster"
-eks_cluster_version   = "1.31"
+eks_cluster_version   = "1.27"
 
 inbox_notification_endpoint            = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
 primarysite_iam_user_name              = "org-slug-primarysite-user"
