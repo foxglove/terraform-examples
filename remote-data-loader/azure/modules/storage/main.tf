@@ -33,6 +33,6 @@ resource "azurerm_storage_management_policy" "cache_policy" {
 
 resource "azurerm_storage_container" "cache" {
   name                  = "cache"
-  storage_account_name  = azurerm_storage_account.storage.name
+  storage_account_id    = azurerm_storage_account.storage.id
   container_access_type = "private"
 }

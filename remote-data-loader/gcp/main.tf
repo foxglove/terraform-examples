@@ -28,14 +28,14 @@ module "vpc" {
   network_name = var.vpc_name
   subnets = [
     {
-      subnet_name      = "subnet-01"
+      subnet_name      = "rdl-subnet-01"
       subnet_ip        = "10.2.0.0/16"
       subnet_region    = var.gcp_region
       subnet_flow_logs = "true"
     }
   ]
   secondary_ranges = {
-    "subnet-01" = [
+    "rdl-subnet-01" = [
       {
         range_name    = "pods"
         ip_cidr_range = "192.168.0.0/18"
