@@ -50,12 +50,15 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.3"
+  version = "20.31.0"
 
   cluster_name                    = var.eks_cluster_name
   cluster_version                 = var.eks_cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+
+  # Allow the Terraform user to access the cluster
+  enable_cluster_creator_admin_permissions = true
 
   cluster_addons = {
     kube-proxy = {}
@@ -74,9 +77,7 @@ module "eks" {
   create_node_security_group    = false
 
   eks_managed_node_group_defaults = {
-    ami_type                              = "AL2_x86_64"
-    attach_cluster_primary_security_group = true
-    create_security_group                 = false
+    ami_type = "AL2_x86_64"
   }
 
   eks_managed_node_groups = {
@@ -95,9 +96,8 @@ module "eks" {
     # the configured namespace. All workloads in this namespace will be run by the
     # Fargate scheduler.
     foxglove = {
-      create_iam_role = true
-      name            = var.eks_foxglove_namespace
-      selectors       = [{ namespace = var.eks_foxglove_namespace }]
+      name      = var.eks_foxglove_namespace
+      selectors = [{ namespace = var.eks_foxglove_namespace }]
     }
   }
 }

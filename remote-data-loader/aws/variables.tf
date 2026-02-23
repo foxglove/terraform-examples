@@ -34,7 +34,7 @@ variable "eks_cluster_name" {
 variable "eks_cluster_version" {
   type        = string
   description = "EKS cluster version"
-  default     = "1.27"
+  default     = "1.31"
 }
 
 variable "eks_foxglove_namespace" {
