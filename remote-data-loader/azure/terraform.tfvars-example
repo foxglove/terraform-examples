@@ -1,0 +1,11 @@
+resource_group_name      = "<resource_group_name>"
+resource_location        = "Central US"
+application_display_name = "org-slug-rdl-application"
+
+storage_account_name  = "fgrdlcache"  # Must be globally unique, 3-24 chars, lowercase letters and numbers only
+cache_expiration_days = 30            # Days after which cached objects are deleted
+
+cluster_name      = "org-slug-rdl-cluster"
+cluster_min_nodes = 1
+cluster_max_nodes = 4
+cluster_vm_size   = "Standard_D4_v2"

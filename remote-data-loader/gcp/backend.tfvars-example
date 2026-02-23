@@ -1,0 +1,2 @@
+bucket = "terraform-state-fg-CHANGEME"  # The name of the GCS bucket for storing Terraform state
+prefix = "remote-data-loader/my-environment"  # The path/prefix for your Terraform state file
