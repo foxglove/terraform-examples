@@ -42,3 +42,27 @@ variable "eks_foxglove_namespace" {
   description = "Kubernetes namespace for Remote Data Loader resources"
   default     = "foxglove"
 }
+
+variable "node_group_min_size" {
+  type        = number
+  description = "Minimum number of nodes in the EKS node group"
+  default     = 0
+}
+
+variable "node_group_max_size" {
+  type        = number
+  description = "Maximum number of nodes in the EKS node group"
+  default     = 2
+}
+
+variable "node_group_desired_size" {
+  type        = number
+  description = "Desired number of nodes in the EKS node group"
+  default     = 1
+}
+
+variable "node_group_instance_types" {
+  type        = list(string)
+  description = "List of instance types for the EKS node group"
+  default     = ["t3.small"]
+}

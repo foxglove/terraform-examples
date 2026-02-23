@@ -7,3 +7,9 @@ eks_cluster_version = "1.31"
 cache_expiration_days                  = 30  # Days after which cached objects are deleted
 abort_incomplete_multipart_upload_days = 7   # Days after which incomplete uploads are aborted
 eks_foxglove_namespace                 = "foxglove"  # Kubernetes namespace for Remote Data Loader
+
+# EKS node group configuration
+node_group_min_size       = 0
+node_group_max_size       = 2
+node_group_desired_size   = 1
+node_group_instance_types = ["t3.small"]
