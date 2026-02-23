@@ -1,7 +1,7 @@
 module "eks_garbage_collector_sa_role" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.60.0"
-  
+
   role_name = "${var.eks_foxglove_namespace}-garbage-collector-sa-role"
 
   oidc_providers = {
