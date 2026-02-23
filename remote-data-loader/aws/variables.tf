@@ -37,7 +37,7 @@ variable "eks_cluster_version" {
   default     = "1.27"
 }
 
-variable "eks_namespace" {
+variable "eks_foxglove_namespace" {
   type        = string
   description = "Kubernetes namespace for Remote Data Loader resources"
   default     = "foxglove"

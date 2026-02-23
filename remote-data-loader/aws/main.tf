@@ -96,8 +96,8 @@ module "eks" {
     # Fargate scheduler.
     foxglove = {
       create_iam_role = true
-      name            = var.eks_namespace
-      selectors       = [{ namespace = var.eks_namespace }]
+      name            = var.eks_foxglove_namespace
+      selectors       = [{ namespace = var.eks_foxglove_namespace }]
     }
   }
 }
@@ -105,8 +105,8 @@ module "eks" {
 ## ----- IAM policy & roles -----
 
 module "iam" {
-  source                = "./modules/iam"
-  cache_bucket_arn      = module.s3_cache.bucket_arn
-  eks_oidc_provider_arn = module.eks.oidc_provider_arn
-  eks_namespace         = var.eks_namespace
+  source                 = "./modules/iam"
+  cache_bucket_arn       = module.s3_cache.bucket_arn
+  eks_oidc_provider_arn  = module.eks.oidc_provider_arn
+  eks_foxglove_namespace = var.eks_foxglove_namespace
 }

@@ -6,4 +6,4 @@ eks_cluster_version = "1.27"
 
 cache_expiration_days                  = 30  # Days after which cached objects are deleted
 abort_incomplete_multipart_upload_days = 7   # Days after which incomplete uploads are aborted
-eks_namespace                          = "foxglove"  # Kubernetes namespace for Remote Data Loader
+eks_foxglove_namespace                 = "foxglove"  # Kubernetes namespace for Remote Data Loader

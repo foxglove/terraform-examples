@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "remote_data_loader_policy_document" {
 }
 
 resource "aws_iam_policy" "remote_data_loader_policy" {
-  name   = "${var.eks_namespace}-remote-data-loader-sa-policy"
+  name   = "${var.eks_foxglove_namespace}-remote-data-loader-sa-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.remote_data_loader_policy_document.json
 }
@@ -31,13 +31,13 @@ module "eks_remote_data_loader_sa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.60.0"
 
-  role_name = "${var.eks_namespace}-remote-data-loader-sa-role"
+  role_name = "${var.eks_foxglove_namespace}-remote-data-loader-sa-role"
 
   oidc_providers = {
     main = {
       provider_arn = var.eks_oidc_provider_arn
       namespace_service_accounts = [
-        "${var.eks_namespace}:remote-data-loader"
+        "${var.eks_foxglove_namespace}:remote-data-loader"
       ]
     }
   }
