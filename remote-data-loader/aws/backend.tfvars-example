@@ -1,0 +1,3 @@
+bucket = "terraform-state-fg-CHANGEME"
+region = "us-east-1"
+key    = "remote-data-loader/CHANGEME/terraform.tfstate"

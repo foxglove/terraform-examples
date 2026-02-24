@@ -1,0 +1,9 @@
+gcp_project  = "my-project-id"      # Your GCP project ID
+gcp_region   = "us-west2"           # The GCP region where resources will be created
+vpc_name     = "org-slug-rdl-vpc"   # Name for the VPC
+cluster_name = "org-slug-rdl-cluster"  # Name for the GKE cluster
+
+cache_bucket_name     = "org-slug-cache-bucket"  # Name for the cache storage bucket
+cache_expiration_days = 30                       # Days after which cached objects are deleted
+
+service_account_name = "org-slug-rdl-sa"  # Name for the IAM service account

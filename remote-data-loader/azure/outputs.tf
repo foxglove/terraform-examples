@@ -1,0 +1,36 @@
+output "storage_account_name" {
+  value       = module.storage.storage_account_name
+  description = "Name of the storage account"
+}
+
+output "cache_container_name" {
+  value       = module.storage.cache_container_name
+  description = "Name of the cache container"
+}
+
+output "tenant_id" {
+  value       = module.iam.tenant_id
+  description = "The AZURE_TENANT_ID value for cloud credentials"
+}
+
+output "client_id" {
+  value       = module.iam.client_id
+  description = "The AZURE_CLIENT_ID value for cloud credentials"
+}
+
+output "client_secret" {
+  value       = module.iam.client_secret
+  description = "The AZURE_CLIENT_SECRET value for cloud credentials"
+  sensitive   = true
+}
+
+output "kube_config" {
+  value       = module.kubernetes_cluster.kube_config
+  sensitive   = true
+  description = "Kube config for the created Kubernetes cluster"
+}
+
+output "cluster_name" {
+  value       = module.kubernetes_cluster.cluster_name
+  description = "Name of the AKS cluster"
+}
