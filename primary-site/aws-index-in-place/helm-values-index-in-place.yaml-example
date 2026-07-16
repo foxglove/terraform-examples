@@ -1,0 +1,44 @@
+# Example Helm values for an index-in-place Primary Site.
+# Chart: foxglove/primary-site  (helm repo add foxglove https://helm-charts.foxglove.dev)
+#
+# Substitute the <...> placeholders. The two role ARNs come from the Terraform
+# outputs (iam_indexer_role_arn, iam_query_service_role_arn).
+
+globals:
+  indexingStrategy: index-in-place        # default is `split-files`
+  indexInPlace:
+    storageProvider: aws
+    bucketName: <bucket-a>                # comma-delimited for multiple: <bucket-a>,<bucket-b>
+  aws:
+    region: us-east-1                     # required when storageProvider: aws
+
+# Service accounts are disabled by default; enable and annotate both for IRSA.
+indexer:
+  deployment:
+    serviceAccount:
+      enabled: true
+      annotations:
+        eks.amazonaws.com/role-arn: <iam_indexer_role_arn>
+    # env:
+    #   - name: MAX_CONCURRENCY   # default 4; raise for a large backlog, lower on rate-limit errors
+    #     value: "4"
+
+queryService:
+  deployment:
+    serviceAccount:
+      enabled: true
+      annotations:
+        eks.amazonaws.com/role-arn: <iam_query_service_role_arn>
+
+ingress:
+  enabled: true
+  className: alb
+  host: <site-dns-name>
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: <acm-cert-arn>
+  tls:
+    - hosts: [<site-dns-name>]

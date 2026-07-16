@@ -1,0 +1,10 @@
+aws_region          = "us-east-1"
+vpc_name            = "org-slug-vpc"
+eks_cluster_name    = "org-slug-cluster"
+eks_cluster_version = "1.35"
+
+indexed_bucket_names   = ["org-slug-recordings"]
+create_indexed_buckets = false
+
+bucket_notification_endpoint           = "https://api.foxglove.dev/endpoints/indexed-bucket-notifications?token=XXXXXXXXXEXAMPLE"
+abort_incomplete_multipart_upload_days = 5
