@@ -1,12 +1,13 @@
 # Store Terraform state in S3 (NOTE we don't use DynamoDB so there's no locking information)
 terraform {
-  required_version = ">= 1.3.2"
+  # terraform-aws-modules/eks v21 requires Terraform >= 1.5.7 and AWS provider >= 6.52
+  required_version = ">= 1.5.7"
   backend "s3" {}
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.100.0"
+      version = "6.57.1"
     }
   }
 }

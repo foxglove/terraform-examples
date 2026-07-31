@@ -36,6 +36,9 @@ The application does not require the use of AWS account root privileges for depl
 
 ### Run Terraform
 
+This example requires **Terraform >= 1.5.7** and AWS provider **6.x** (pinned in
+`provider.tf`).
+
 Before running Terraform for the first time, configure your local variables. Note that some
 of them you'll find on the Foxglove [Settings page](https://app.foxglove.dev/~/settings/sites),
 under the Sites tab.
