@@ -71,10 +71,17 @@ use, consider the following:
 
 ### Connecting to the cluster
 
-By default, only the creator Terraform user will be able to connect to this EKS cluster.
-Read the AWS docs about [adding other IAM users and roles](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html),
-or set `manage_aws_auth_configmap = true` in the eks module (will require setting up the
-"kubernetes" provider).
+By default, only the Terraform identity that created the cluster can connect (via EKS access
+entries). Read the AWS docs about [granting IAM users and roles access to
+Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/grant-k8s-access.html) to add
+other principals.
+
+### EKS upgrade policy
+
+The example sets the cluster upgrade policy to `STANDARD` and does not pin a Kubernetes
+minor version. New clusters use the latest version available at creation time, and EKS may
+automatically upgrade the cluster when standard support ends instead of moving it into paid
+[extended support](https://docs.aws.amazon.com/eks/latest/userguide/view-upgrade-policy.html).
 
 ### AWS Load Balancer Controller
 
