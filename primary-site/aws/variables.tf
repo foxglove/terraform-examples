@@ -39,8 +39,3 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
-variable "eks_cluster_version" {
-  description = "EKS cluster version"
-  type        = string
-  default     = "1.27"
-}
