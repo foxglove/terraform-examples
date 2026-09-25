@@ -67,12 +67,18 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.3"
+  version = "20.37.2"
 
   cluster_name                    = var.eks_cluster_name
-  cluster_version                 = var.eks_cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+
+  # Stay on standard support to avoid extended support charges; EKS may auto-upgrade
+  # when standard support ends.
+  # https://docs.aws.amazon.com/eks/latest/userguide/view-upgrade-policy.html
+  cluster_upgrade_policy = {
+    support_type = "STANDARD"
+  }
 
   cluster_addons = {
     kube-proxy = {}
@@ -86,12 +92,15 @@ module "eks" {
   # the key is the role that created it
   kms_key_enable_default_policy = true
 
+  # Grant the Terraform identity cluster admin via access entries (v20+ default).
+  enable_cluster_creator_admin_permissions = true
+
   # Fargate profiles use the cluster primary security group, so these are not utilized
   create_cluster_security_group = false
   create_node_security_group    = false
 
   eks_managed_node_group_defaults = {
-    ami_type                              = "AL2_x86_64"
+    ami_type                              = "AL2023_x86_64_STANDARD"
     attach_cluster_primary_security_group = true
     create_security_group                 = false
   }
