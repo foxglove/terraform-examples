@@ -4,15 +4,6 @@ resource "aws_sqs_queue" "dlq" {
 
 resource "aws_sns_topic" "topic" {
   name = var.topic_name
-  delivery_policy = jsonencode({
-    "http" : {
-      "defaultHealthyRetryPolicy" : {
-        "numRetries" : 100,
-        "minDelayTarget" : 20, // In seconds; default is 20
-        "maxDelayTarget" : 20, // In seconds; default is 20
-      }
-    }
-  })
 }
 
 data "aws_iam_policy_document" "sns_topic_policy" {
@@ -91,6 +82,21 @@ resource "aws_sns_topic_subscription" "webhook" {
 
   redrive_policy = jsonencode({
     "deadLetterTargetArn" : aws_sqs_queue.dlq.arn
+  })
+
+  delivery_policy = jsonencode({
+    "healthyRetryPolicy" : {
+      "minDelayTarget" : 20
+      "maxDelayTarget" : 1500
+      "numRetries" : 9
+      "numNoDelayRetries" : 0
+      "numMinDelayRetries" : 0
+      "numMaxDelayRetries" : 0
+      "backoffFunction" : "exponential"
+    }
+    "throttlePolicy" : {
+      "maxReceivesPerSecond" : 100
+    }
   })
 }
 
