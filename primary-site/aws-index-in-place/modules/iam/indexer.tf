@@ -1,0 +1,43 @@
+data "aws_iam_policy_document" "indexer_policy_document" {
+  statement {
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:ListBucket"
+    ]
+    resources = var.indexed_bucket_arns
+    effect    = "Allow"
+  }
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectVersion"
+    ]
+    resources = [for arn in var.indexed_bucket_arns : "${arn}/*"]
+    effect    = "Allow"
+  }
+}
+
+resource "aws_iam_policy" "indexer_policy" {
+  name   = "${var.eks_foxglove_namespace}-indexer-sa-policy"
+  path   = "/"
+  policy = data.aws_iam_policy_document.indexer_policy_document.json
+}
+
+module "eks_indexer_sa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "5.60.0"
+
+  role_name = "${var.eks_foxglove_namespace}-indexer-sa-role"
+
+  oidc_providers = {
+    main = {
+      provider_arn               = var.eks_oidc_provider_arn
+      namespace_service_accounts = ["${var.eks_foxglove_namespace}:indexer"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "foxglove_indexer_policy_attachment" {
+  policy_arn = aws_iam_policy.indexer_policy.arn
+  role       = module.eks_indexer_sa_role.iam_role_name
+}
