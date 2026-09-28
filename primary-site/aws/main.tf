@@ -38,7 +38,7 @@ module "vpc" {
   # EKS VPC and subnet requirements and considerations
   # https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html
   cidr            = "10.0.0.0/16"
-  azs = data.aws_availability_zones.available.names
+  azs             = data.aws_availability_zones.available.names
   private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
@@ -67,14 +67,23 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.3"
+  # https://github.com/terraform-aws-modules/terraform-aws-eks/releases?page=1
+  version = "21.24.0"
 
-  cluster_name                    = var.eks_cluster_name
-  cluster_version                 = var.eks_cluster_version
-  cluster_endpoint_private_access = true
-  cluster_endpoint_public_access  = true
+  name = var.eks_cluster_name
+  # Leave unset so EKS selects the latest available Kubernetes version at create time.
+  kubernetes_version      = null
+  endpoint_private_access = true
+  endpoint_public_access  = true
 
-  cluster_addons = {
+  # Stay on standard support to avoid extended support charges; EKS may auto-upgrade
+  # when standard support ends.
+  # https://docs.aws.amazon.com/eks/latest/userguide/view-upgrade-policy.html
+  upgrade_policy = {
+    support_type = "STANDARD"
+  }
+
+  addons = {
     kube-proxy = {}
     vpc-cni    = {}
   }
@@ -86,15 +95,12 @@ module "eks" {
   # the key is the role that created it
   kms_key_enable_default_policy = true
 
-  # Fargate profiles use the cluster primary security group, so these are not utilized
-  create_cluster_security_group = false
-  create_node_security_group    = false
+  # Grant the Terraform identity cluster admin via access entries.
+  enable_cluster_creator_admin_permissions = true
 
-  eks_managed_node_group_defaults = {
-    ami_type                              = "AL2_x86_64"
-    attach_cluster_primary_security_group = true
-    create_security_group                 = false
-  }
+  # Fargate profiles use the cluster primary security group, so these are not utilized
+  create_security_group      = false
+  create_node_security_group = false
 
   eks_managed_node_groups = {
     default = {
@@ -104,6 +110,10 @@ module "eks" {
       desired_size = 1
 
       instance_types = ["t3.small"]
+      ami_type       = "AL2023_x86_64_STANDARD"
+
+      attach_cluster_primary_security_group = true
+      create_security_group                 = false
     }
   }
 
