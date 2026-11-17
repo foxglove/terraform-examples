@@ -53,9 +53,15 @@ module "eks" {
   version = "20.31.0"
 
   cluster_name                    = var.eks_cluster_name
-  cluster_version                 = var.eks_cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
+
+  # Use the STANDARD upgrade policy to prevent extended support charges. When standard
+  # support ends, EKS upgrades only the control plane. The README gives the next steps.
+  # https://docs.aws.amazon.com/eks/latest/userguide/view-upgrade-policy.html
+  cluster_upgrade_policy = {
+    support_type = "STANDARD"
+  }
 
   # Allow the Terraform user to access the cluster
   enable_cluster_creator_admin_permissions = true
@@ -77,7 +83,7 @@ module "eks" {
   create_node_security_group    = false
 
   eks_managed_node_group_defaults = {
-    ami_type = "AL2_x86_64"
+    ami_type = "AL2023_x86_64_STANDARD"
   }
 
   eks_managed_node_groups = {
