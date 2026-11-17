@@ -71,10 +71,50 @@ use, consider the following:
 
 ### Connecting to the cluster
 
-By default, only the creator Terraform user will be able to connect to this EKS cluster.
-Read the AWS docs about [adding other IAM users and roles](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html),
-or set `manage_aws_auth_configmap = true` in the eks module (will require setting up the
-"kubernetes" provider).
+The example grants cluster admin to the IAM user or role that runs Terraform, through an EKS
+access entry (`enable_cluster_creator_admin_permissions = true`). If a different IAM user or
+role runs `terraform apply` later, the access entry moves to that principal and the previous
+one loses access. To give other principals access, use the eks module's `access_entries` input,
+or read the AWS docs about [granting IAM users and roles access to
+Kubernetes](https://docs.aws.amazon.com/eks/latest/userguide/grant-k8s-access.html).
+
+### EKS upgrade policy
+
+The example sets the cluster upgrade policy to `STANDARD` and does not pin a Kubernetes
+minor version. New clusters use the EKS default version at creation time, which is not always
+the latest version (`aws eks describe-cluster-versions --default-only` shows it). When that
+version reaches the end of standard support, EKS automatically upgrades the control plane to
+the next version instead of moving the cluster into paid
+[extended support](https://docs.aws.amazon.com/eks/latest/userguide/view-upgrade-policy.html).
+
+EKS does not upgrade the nodes, add-ons, or running Fargate pods. After an automatic upgrade:
+
+1. Run `terraform apply` to upgrade the managed node group and the `kube-proxy` and `vpc-cni`
+   add-ons.
+2. Update the [self-managed CoreDNS add-on](https://docs.aws.amazon.com/eks/latest/userguide/coredns-add-on-self-managed-update.html).
+3. Restart the deployments in the `foxglove` namespace so that their Fargate pods use the new
+   version: `kubectl rollout restart deployment -n foxglove`.
+
+### Upgrading an existing deployment
+
+Earlier versions of this example used v19 of the EKS module. Before you apply this version to
+an existing deployment, read the module's
+[v20 upgrade guide](https://github.com/terraform-aws-modules/terraform-aws-eks/blob/v20.37.2/docs/UPGRADE-20.0.md),
+run `terraform init -upgrade --backend-config backend.tfvars`, and review the `terraform plan`
+output. Do not apply if the plan replaces `module.eks.aws_eks_cluster.this[0]`.
+
+- The cluster authentication mode changes from `CONFIG_MAP` to `API_AND_CONFIG_MAP`. You
+  can't revert this change. Existing `aws-auth` ConfigMap entries keep working.
+- The managed node group is replaced, because its AMI type changes to Amazon Linux 2023.
+- EKS accepts the `STANDARD` upgrade policy only while the cluster runs a Kubernetes version
+  in [standard support](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html).
+  If your cluster is in extended support, remove `cluster_upgrade_policy` from `main.tf` and
+  apply. Then upgrade the cluster one minor version at a time until it is in standard support,
+  run `terraform apply` after each upgrade, and add `cluster_upgrade_policy` back.
+- If the apply fails because an access entry already exists for your IAM identity, delete the
+  entry that EKS created for the cluster creator, then apply again:
+  `aws eks delete-access-entry --cluster-name <cluster-name> --principal-arn <principal-arn>`
+- Remove `eks_cluster_version` from `terraform.tfvars`. The variable no longer exists.
 
 ### AWS Load Balancer Controller
 
