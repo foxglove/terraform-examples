@@ -31,12 +31,6 @@ variable "eks_cluster_name" {
   description = "Name of the EKS cluster"
 }
 
-variable "eks_cluster_version" {
-  type        = string
-  description = "EKS cluster version"
-  default     = "1.31"
-}
-
 variable "eks_foxglove_namespace" {
   type        = string
   description = "Kubernetes namespace for Remote Data Loader resources"
