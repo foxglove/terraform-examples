@@ -63,6 +63,9 @@ You should now be able to run `terraform plan` and `terraform apply`.
   `s3:ObjectCreated:*` events. Whenever a new object appears in the bucket, the webhook
   `inbox_notification_endpoint` will be notified.
 
+- `cloudfront`: creates a CloudFront distribution in front of the site's ALB. Only created when
+  `enable_cloudfront` is `true`.
+
 ## Production use
 
 This Terraform example creates all resources that are needed for a working Foxglove Primary
@@ -82,6 +85,49 @@ To provisions an AWS Application Load Balancer (ALB) when a Kubernetes Ingress i
 the AWS Load Balancer Controller needs to be installed in the cluster. Follow the
 [AWS user guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
 to set up this add-on.
+
+### CloudFront
+
+The ALB holds each client's TCP connection, and AWS doesn't let you change its congestion control.
+`enable_cloudfront` puts a CloudFront distribution in front of the ALB that the primary site Helm
+chart's Ingress creates, which speeds up streaming to clients far from your AWS region. Clients
+connect to a nearby CloudFront edge location, and traffic reaches the ALB over the AWS network.
+CloudFront uses [BBR](https://github.com/google/bbr) congestion control for connections to
+clients, which keeps throughput high on high-latency links. The ALB, its certificate and the Helm
+chart stay the same. CloudFront is off by default.
+
+The distribution has caching off and forwards every header, cookie and query string. CloudFront
+waits at most 120 seconds for the first byte of a response and between packets, so slower queries
+fail.
+
+1. Deploy the primary site Helm chart with an ALB Ingress that has a fixed name, and check that
+   the site works. CloudFront needs an internet-facing ALB with an HTTPS listener on port 443:
+
+   ```yaml
+   ingress:
+     className: alb
+     host: foxglove-site.example.com
+     annotations:
+       alb.ingress.kubernetes.io/load-balancer-name: foxglove-primary-site
+       alb.ingress.kubernetes.io/scheme: internet-facing
+       alb.ingress.kubernetes.io/target-type: ip
+       alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:XXXXXXXXXXXX:certificate/EXAMPLE
+   ```
+
+   The [AWS Load Balancer Controller](#aws-load-balancer-controller) creates the ALB from these
+   annotations. Adding `load-balancer-name` to an existing Ingress replaces its ALB, and the new
+   ALB has a different DNS name.
+2. In `terraform.tfvars`, set `enable_cloudfront = true` and `site_load_balancer_name` to the same
+   name. Also set `site_hostname` to the Ingress host, and `cloudfront_certificate_arn` to an ACM
+   certificate in us-east-1 that covers that host. If your site is in us-east-1, the ALB's
+   certificate works.
+3. Run `terraform apply`.
+4. Point your site's DNS record at the `cloudfront_domain_name` output.
+
+If the Ingress is recreated, run `terraform apply` again so CloudFront picks up the new ALB. Turn
+CloudFront off before removing the Ingress. Otherwise every plan fails, because Terraform can't
+find the ALB.
 
 ### CoreDns on Fargate
 

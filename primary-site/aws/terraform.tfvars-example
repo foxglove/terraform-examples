@@ -8,3 +8,9 @@ eks_cluster_version   = "1.27"
 inbox_notification_endpoint            = "https://api.foxglove.dev/endpoints/inbox-notifications?token=XXXXXXXXXEXAMPLE"
 primarysite_iam_user_name              = "org-slug-primarysite-user"
 abort_incomplete_multipart_upload_days = 5
+
+# CloudFront. Enable after deploying the primary site Helm chart, as described in the README.
+enable_cloudfront = false
+# site_load_balancer_name    = "foxglove-primary-site"
+# site_hostname              = "foxglove-site.example.com"
+# cloudfront_certificate_arn = "arn:aws:acm:us-east-1:XXXXXXXXXXXX:certificate/EXAMPLE"

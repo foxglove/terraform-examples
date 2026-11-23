@@ -22,3 +22,13 @@ output "iam_garbage_collector_role_arn" {
   value       = module.iam.iam_garbage_collector_role_arn
   description = "ARN for the role to be added to garbage collector pods"
 }
+
+output "cloudfront_domain_name" {
+  value       = one(module.cloudfront[*].domain_name)
+  description = "Domain name of the CloudFront distribution, when enabled"
+}
+
+output "cloudfront_hosted_zone_id" {
+  value       = one(module.cloudfront[*].hosted_zone_id)
+  description = "Route 53 hosted zone ID for alias records that point at the CloudFront distribution, when enabled"
+}

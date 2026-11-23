@@ -128,3 +128,51 @@ module "iam" {
   eks_oidc_provider_arn  = module.eks.oidc_provider_arn
   eks_foxglove_namespace = "foxglove"
 }
+
+## ----- CloudFront -----
+
+# The AWS Load Balancer Controller creates this ALB from the primary site Helm chart's Ingress.
+# Looking it up by name, not ARN, finds the replacement when the Ingress is recreated.
+data "aws_lb" "site" {
+  count = var.enable_cloudfront ? 1 : 0
+  name  = var.site_load_balancer_name
+
+  lifecycle {
+    precondition {
+      condition     = var.site_load_balancer_name != null
+      error_message = "Set site_load_balancer_name to the alb.ingress.kubernetes.io/load-balancer-name annotation on the primary site's Ingress."
+    }
+
+    precondition {
+      condition     = var.site_hostname != null && var.cloudfront_certificate_arn != null
+      error_message = "Set site_hostname and cloudfront_certificate_arn when enable_cloudfront is true."
+    }
+
+    postcondition {
+      condition     = !self.internal
+      error_message = "CloudFront can't reach an internal ALB. Set alb.ingress.kubernetes.io/scheme: internet-facing on the primary site's Ingress."
+    }
+  }
+}
+
+data "aws_lb_listener" "site_https" {
+  count             = var.enable_cloudfront ? 1 : 0
+  load_balancer_arn = data.aws_lb.site[0].arn
+  port              = 443
+
+  lifecycle {
+    postcondition {
+      condition     = self.protocol == "HTTPS"
+      error_message = "CloudFront connects to the ALB over HTTPS on port 443. Give the primary site's Ingress an HTTPS listener with alb.ingress.kubernetes.io/listen-ports and a certificate."
+    }
+  }
+}
+
+module "cloudfront" {
+  source = "./modules/cloudfront"
+  count  = var.enable_cloudfront ? 1 : 0
+
+  load_balancer_dns_name = data.aws_lb.site[0].dns_name
+  site_hostname          = var.site_hostname
+  certificate_arn        = var.cloudfront_certificate_arn
+}
