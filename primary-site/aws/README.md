@@ -83,6 +83,53 @@ the AWS Load Balancer Controller needs to be installed in the cluster. Follow th
 [AWS user guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
 to set up this add-on.
 
+### Global Accelerator
+
+The ALB holds each client's TCP connection, and AWS doesn't let you change its congestion control.
+An AWS Global Accelerator in front of the ALB speeds up streaming to clients far from your AWS
+region. Clients connect to a nearby AWS edge location, and traffic reaches the ALB over the AWS
+network. TLS still ends at the ALB, so its certificate stays the same.
+
+AWS doesn't document which congestion control the accelerator's edge uses. Connections that send
+no data for 340 seconds are closed. Global Accelerator charges an hourly fee plus a per-GB fee on
+top of normal data transfer.
+
+The AWS Load Balancer Controller v2.17.0 and later can create the accelerator for the primary site
+Helm chart's Ingress, and moves it to the new ALB if the Ingress is recreated:
+
+1. Turn on the controller's `GlobalAcceleratorController` and `EnableRGTAPI` feature gates:
+
+   ```bash
+   helm upgrade aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system \
+     --reuse-values \
+     --set controllerConfig.featureGates.GlobalAcceleratorController=true \
+     --set controllerConfig.featureGates.EnableRGTAPI=true
+   ```
+
+2. Check that `kubectl get crd globalaccelerators.aga.k8s.aws` finds the `GlobalAccelerator`
+   resource definition. `helm upgrade` doesn't add new resource definitions, so if it's missing,
+   apply it as described in the controller's
+   [installation guide](https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/guide/globalaccelerator/installation.md).
+3. Attach the controller's
+   [Global Accelerator IAM policy](https://github.com/kubernetes-sigs/aws-load-balancer-controller/blob/main/docs/install/aga_controller_iam_policy.md)
+   to its IAM role.
+4. In the primary site Helm chart's values, turn on the accelerator and upgrade the release:
+
+   ```yaml
+   ingress:
+     globalAccelerator:
+       enabled: true
+   ```
+
+5. Point your site's DNS record at the accelerator's DNS name:
+
+   ```bash
+   kubectl get globalaccelerator site -n foxglove -o jsonpath='{.status.dnsName}'
+   ```
+
+Turning the accelerator off or uninstalling the chart deletes the accelerator, along with its
+static IP addresses.
+
 ### CoreDns on Fargate
 
 In the example, the EKS module is set up with both a managed node and Fargate profiles.
